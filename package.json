@@ -25,6 +25,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
+    "dev": "nodemon src/",
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
@@ -45,7 +46,9 @@
     "feathers-rest": "^1.8.0",
     "feathers-socketio": "^2.0.0",
     "helmet": "^3.6.1",
+    "lodash": "^4.17.4",
     "mongoose": "^4.11.0",
+    "mongoose-type-email": "^1.0.5",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth20": "^1.0.0",
     "serve-favicon": "^2.4.3",
@@ -54,6 +57,7 @@
   "devDependencies": {
     "eslint": "^4.1.1",
     "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
   }
