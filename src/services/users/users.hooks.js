@@ -11,13 +11,15 @@ const restrict = [
   })
 ];
 
+const syncOauthToLocal = require('../../hooks/sync-oauth-to-local');
+
 module.exports = {
   before: {
     all: [],
     find: [ authenticate('jwt') ],
     get: [ ...restrict ],
-    create: [ hashPassword() ],
-    update: [ ...restrict, hashPassword() ],
+    create: [hashPassword(), syncOauthToLocal()],
+    update: [...restrict, hashPassword(), syncOauthToLocal()],
     patch: [ ...restrict, hashPassword() ],
     remove: [ ...restrict ]
   },
