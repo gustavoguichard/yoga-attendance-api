@@ -10,11 +10,9 @@ module.exports = function (app) {
     user: { type: SchemaTypes.ObjectId, ref: 'users' },
     email: {
       type: String,
-      required: false,
-      unique: false,
-      // unique: [true, 'This email is already taken'],
-      // sparse: true,
-      // trim: true
+      unique: [true, 'This email is already taken'],
+      sparse: true,
+      trim: true
     },
     fullName: { type: String, required: [true, 'Name is required'] },
     phone: { type: String },

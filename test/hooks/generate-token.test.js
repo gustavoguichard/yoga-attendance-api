@@ -4,7 +4,13 @@ const generateToken = require('../../src/hooks/generate-token');
 describe('\'generate-token\' hook', () => {
   it('runs the hook', () => {
     // A mock hook object
-    const mock = {};
+    const mock = {
+      data: {
+        fullName: 'John Doe',
+        birthdate: 'Sun Jul 13 1986 10:00:00 GMT-0300 (-03)',
+      },
+      service: undefined,
+    };
     // Initialize our hook with no options
     const hook = generateToken();
 
