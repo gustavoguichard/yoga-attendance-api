@@ -7,7 +7,7 @@ module.exports = function (app) {
   const { Schema, SchemaTypes } = mongooseClient;
   const classrooms = new Schema({
     title: { type: String, required: true },
-    teacher: [{ type: SchemaTypes.ObjectId, ref: 'practitioners' }],
+    teacher: { type: SchemaTypes.ObjectId, ref: 'practitioners' },
     practitioners: [{ type: SchemaTypes.ObjectId, ref: 'practitioners' }],
     schedule: [{
       weekday: { type: String },
