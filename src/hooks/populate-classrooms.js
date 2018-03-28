@@ -2,19 +2,14 @@ const { find, map, toString } = require('lodash')
 
 module.exports = function () {
   return async function (hook) {
-    const practitioners = await hook.app.service('practitioners').find({
-      query: { teacher: true }
-    })
-    const newData = map(hook.result.data, room => {
-      if(room.teacher) {
-        const teacherObj = find(practitioners.data, p =>
-          toString(p._id) === toString(room.teacher)
-        )
-        room.teacher = teacherObj || null
-      }
-      return room
-    })
-    hook.result.data = newData
+    const { app, method, result, params } = hook
+    const classrooms = method === 'find' ? result.data : [ result ]
+    await Promise.all(classrooms.map(async lesson => {
+      if(!lesson.teacher) { return null }
+      const teacher = await app.service('practitioners').get(lesson.teacher, params)
+      lesson.teacher = teacher
+    }))
+
     return hook;
   };
 };
