@@ -1,4 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const populateTeachers = require('../../hooks/populate-teachers');
 
 module.exports = {
   before: {
@@ -13,8 +14,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
-    get: [],
+    find: [ populateTeachers() ],
+    get: [ populateTeachers() ],
     create: [],
     update: [],
     patch: [],
