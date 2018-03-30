@@ -2,7 +2,7 @@ const { map, pick } = require('lodash')
 
 module.exports = function () {
   return function (hook) {
-    const whitelist = ['populatePractitioners']
+    const whitelist = ['populatePractitioners', 'populateClassroom']
     const paramsFromClient = pick(hook.params.query, whitelist)
     hook.params = { ...paramsFromClient, ...hook.params, }
     map(whitelist, word => {
