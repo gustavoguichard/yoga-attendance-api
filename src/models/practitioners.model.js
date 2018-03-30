@@ -15,6 +15,7 @@ module.exports = function (app) {
       trim: true
     },
     fullName: { type: String, required: [true, 'Name is required'] },
+    nickName: { type: String },
     picture: { type: String },
     phone: { type: String },
     accessCode: { type: String, required: true, unique: true },

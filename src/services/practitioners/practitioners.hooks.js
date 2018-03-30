@@ -1,22 +1,24 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
 const generateToken = require('../../hooks/generate-token');
+const undecoratePractitioner = require('../../hooks/undecorate-practitioner');
+const decoratePractitioner = require('../../hooks/decorate-practitioner');
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [generateToken()],
-    update: [],
-    patch: [],
+    create: [ undecoratePractitioner(), generateToken() ],
+    update: [ undecoratePractitioner() ],
+    patch: [ undecoratePractitioner() ],
     remove: []
   },
 
   after: {
     all: [],
-    find: [],
-    get: [],
+    find: [ decoratePractitioner() ],
+    get: [ decoratePractitioner() ],
     create: [],
     update: [],
     patch: [],
