@@ -7,7 +7,7 @@ const generateFromBD = bd => moment(bd).format('DDMM')
 module.exports = function () {
   return function (hook) {
     if(!hook.data.accessCode) {
-      return hook.service.find({ paginate: false, query: { $select: ['accessCode'] } }).then((data) => {
+      return hook.service.find({ query: { $limit: 10000, $select: ['accessCode'] } }).then((data) => {
         const accessCodes = map(data, 'accessCode')
         let tempCode = hook.data.birthdate && generateFromBD(hook.data.birthdate)
         let existingCode = tempCode ? includes(accessCodes, tempCode) : true
