@@ -1,13 +1,16 @@
-const { map, pick } = require('lodash')
+const { each, pick, isEmpty } = require('lodash')
 
 module.exports = function () {
   return function (hook) {
-    const whitelist = ['populatePractitioners', 'populateClassroom']
+    const whitelist = ['populatePractitioners', 'populateClassroom', 'populateFamily']
     const paramsFromClient = pick(hook.params.query, whitelist)
-    hook.params = { ...paramsFromClient, ...hook.params, }
-    map(whitelist, word => {
-      delete hook.params.query[word]
-    })
+    if(!isEmpty(paramsFromClient)) {
+      hook.params = { ...paramsFromClient, ...hook.params, }
+      each(whitelist, word => {
+        delete hook.params.query[word]
+      })
+    }
+
     return hook;
   };
 };

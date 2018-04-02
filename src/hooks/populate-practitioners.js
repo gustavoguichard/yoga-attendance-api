@@ -9,6 +9,7 @@ module.exports = function () {
         if(!attendance.practitioners || attendance.practitioners.length === 0) {
           return null
         }
+        delete params.populatePractitioners
         const practitioners = await Promise.all(
           attendance.practitioners.map(
             async id => app.service('practitioners').get(id, params)

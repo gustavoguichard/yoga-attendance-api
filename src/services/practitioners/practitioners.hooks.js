@@ -1,28 +1,31 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-
+const normalizeParams = require('../../hooks/normalize-params');
 const generateToken = require('../../hooks/generate-token');
+const populateFamily = require('../../hooks/populate-family');
+const mutualFamily = require('../../hooks/mutual-family');
+const removeMutualFamily = require('../../hooks/remove-mutual-family');
 const undecoratePractitioner = require('../../hooks/undecorate-practitioner');
 const decoratePractitioner = require('../../hooks/decorate-practitioner');
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [ authenticate('jwt'), normalizeParams() ],
     find: [],
     get: [],
-    create: [ undecoratePractitioner(), generateToken() ],
-    update: [ undecoratePractitioner() ],
-    patch: [ undecoratePractitioner() ],
+    create: [ undecoratePractitioner(), mutualFamily(), generateToken() ],
+    update: [ undecoratePractitioner(), mutualFamily() ],
+    patch: [ undecoratePractitioner(), mutualFamily() ],
     remove: []
   },
 
   after: {
     all: [],
-    find: [ decoratePractitioner() ],
-    get: [ decoratePractitioner() ],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    find: [ populateFamily(), decoratePractitioner() ],
+    get: [ populateFamily(), decoratePractitioner() ],
+    create: [ mutualFamily() ],
+    update: [ mutualFamily() ],
+    patch: [ mutualFamily() ],
+    remove: [ removeMutualFamily() ]
   },
 
   error: {
