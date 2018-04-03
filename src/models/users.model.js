@@ -15,7 +15,6 @@ module.exports = function (app) {
     picture: { type: String },
     role: { type: [String] },
 
-
     googleId: { type: String },
 
     facebookId: { type: String },

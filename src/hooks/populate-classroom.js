@@ -6,7 +6,7 @@ module.exports = function () {
     const frequency = method === 'find' ? result.data : [ result ]
     if(params.populateClassroom) {
       await Promise.all(frequency.map(async attendance => {
-        attendance.classRoom = await app.service('classrooms').get(attendance.classId)
+        attendance.classroom = await app.service('classrooms').get(attendance.classId)
       }))
     }
 
