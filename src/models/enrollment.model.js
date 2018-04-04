@@ -8,7 +8,7 @@ module.exports = function (app) {
   const enrollment = new Schema({
     type: { type: String, enum: ['tuition', 'monthly', 'yearly'], required: true, default: 'tuition' },
     pricing: [{
-      desc: { type: String },
+      desc: { type: String, required: true },
       value: { type: Number },
       amount: { type: Number },
     }],
