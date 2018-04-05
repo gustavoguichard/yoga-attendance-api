@@ -11,6 +11,7 @@ module.exports = function (app) {
     practitioners: [{ type: SchemaTypes.ObjectId, ref: 'practitioners' }],
     enrollments: [{ type: SchemaTypes.ObjectId, ref: 'enrollment' }],
     regularClass: { type: Boolean },
+    tuition: { type: Number, required: true },
     schedule: [{
       weekday: { type: String },
       startDate: { type: Date },

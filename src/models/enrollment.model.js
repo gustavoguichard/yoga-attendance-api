@@ -6,7 +6,7 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema, SchemaTypes } = mongooseClient;
   const enrollment = new Schema({
-    type: { type: String, enum: ['tuition', 'monthly', 'yearly'], required: true, default: 'tuition' },
+    type: { type: String, enum: ['monthly', 'yearly'], required: true, default: 'monthly' },
     pricing: [{
       desc: { type: String, required: true },
       value: { type: Number },
