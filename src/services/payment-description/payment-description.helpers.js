@@ -1,4 +1,7 @@
-const { difference, find, get, includes, keys, map, replace, reduce, some, sumBy, toInteger, toString } = require('lodash')
+const {
+  difference, filter, find, get, includes, keys, map,
+  replace, reduce, sumBy, toInteger, toString,
+} = require('lodash')
 const moment = require('moment')
 
 const calculateEnrollment = ({ enrollmentPrice, data, discount, note }, separateFrequencies, family) => {
@@ -16,7 +19,7 @@ const calculateEnrollment = ({ enrollmentPrice, data, discount, note }, separate
     const perc = 100 - toInteger(replace(discount, '%', ''))
     return { ...result, discount: `Desconto: ${discount}`, value, total: (value * perc) / 100 }
   } else if (includes(discount, '-')) {
-    return { ...result, discount: `Desconto: ${toMoney(discount)}`, value, total: value + (discount * 1) }
+    return { ...result, discount: `Desconto: R$ ${discount},00`, value, total: value + (discount * 1) }
   } else if (discount) {
     return { ...result, discount: 'Valor combinado', value, total: discount * 1 }
   } else if(!classroom && family) {
@@ -44,26 +47,29 @@ const calculateTuitions = (separateFrequencies, enrollments, family) => {
 }
 
 const frequencyByClassType = frequencies =>
-  reduce(frequencies.data, (sum, curr) => {
+  reduce(frequencies, (sum, curr) => {
     get(curr, 'classroom.regularClass')
       ? sum.regularClass = sum.regularClass ? [...sum.regularClass, curr] : [curr]
       : sum[curr.classId] = sum[curr.classId] ? [...sum[curr.classId], curr] : [curr]
     return sum
   }, {})
 
-const calculatePayment = ({ enrollments, family }, frequencies = []) => {
-  const separateFrequencies = frequencyByClassType(frequencies)
+const filterFrequency = ({ data }, _id) => {
+  return filter(data, f => {
+    const ids = map(f.practitioners, toString)
+    return includes(ids, toString(_id))
+  })
+}
+
+const calculatePayment = ({ _id, enrollments, family }, frequencies = []) => {
+  const practitionerFrequency = filterFrequency(frequencies, _id)
+  const separateFrequencies = frequencyByClassType(practitionerFrequency)
   const familyDiscount = (separateFrequencies.regularClass && family.length) ? -10 : 0
   const payments = map(enrollments, e => calculateEnrollment(e, separateFrequencies, familyDiscount))
   const tuitions = calculateTuitions(separateFrequencies, enrollments, familyDiscount)
-  const detailing = [
-    ...payments,
-    ...tuitions,
-  ]
-  return {
-    detailing,
-    total: Math.max(sumBy(detailing, 'total'), 0),
-  }
+  const detailing = [ ...payments, ...tuitions ]
+  const total = Math.max(sumBy(detailing, 'total'), 0)
+  return { detailing, total }
 }
 
 const getPrevDate = (unit = 'month', unitsAgo = 0) =>
@@ -80,6 +86,7 @@ const getTimeRangeQuery = (unit = 'month', unitsAgo = 0) => ({
 module.exports = {
   calculateEnrollment,
   calculatePayment,
+  calculateTuitions,
   getPrevDate,
   getStartOfDate,
   getTimeRangeQuery,
