@@ -2,6 +2,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const normalizeParams = require('../../hooks/normalize-params');
 const generateToken = require('../../hooks/generate-token');
 const populateFamily = require('../../hooks/populate-family');
+const populateEnrollments = require('../../hooks/populate-enrollments');
 const mutualFamily = require('../../hooks/mutual-family');
 const removeMutualFamily = require('../../hooks/remove-mutual-family');
 const undecoratePractitioner = require('../../hooks/undecorate-practitioner');
@@ -20,8 +21,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ populateFamily(), decoratePractitioner() ],
-    get: [ populateFamily(), decoratePractitioner() ],
+    find: [ populateFamily(), populateEnrollments(), decoratePractitioner() ],
+    get: [ populateFamily(), populateEnrollments(), decoratePractitioner() ],
     create: [ mutualFamily() ],
     update: [ mutualFamily() ],
     patch: [ mutualFamily() ],

@@ -26,6 +26,7 @@ module.exports = function (app) {
     discount: { type: String },
     enrollments: [{
       enrollmentId: { type: SchemaTypes.ObjectId, ref: 'enrollment' },
+      enrollmentPrice: { type: String },
       discount: { type: String },
       note: { type: String },
     }],
