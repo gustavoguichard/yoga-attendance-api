@@ -1,10 +1,10 @@
 const {
-  difference, filter, find, get, includes, keys, map,
+  difference, filter, find, flatten, get, includes, keys, map,
   replace, reduce, sumBy, toInteger, toString,
 } = require('lodash')
 const moment = require('moment')
 
-const calculateEnrollment = ({ enrollmentPrice, data, discount, note }, separateFrequencies, family) => {
+const calculateEnrollment = ({ enrollmentId, enrollmentPrice, data, discount, note }, separateFrequencies, family) => {
   const { classroom, className, pricing } = data
   const priceData = find(pricing, p => toString(p._id) === enrollmentPrice)
   if (!priceData) return {}
@@ -14,7 +14,15 @@ const calculateEnrollment = ({ enrollmentPrice, data, discount, note }, separate
     ? get(separateFrequencies, `${classroom}.length`) || 0
     : get(separateFrequencies, 'regularClass.length') || 0
 
-  const result = { note, title: `${className} - ${desc}`, frequented, amount }
+  const result = {
+    enrollmentId,
+    enrollmentPrice,
+    frequented,
+    amount,
+    classroom,
+    note,
+    title: `${className} - ${desc}`,
+  }
   if (includes(discount, '%')) {
     const perc = 100 - toInteger(replace(discount, '%', ''))
     return { ...result, discount: `Desconto: ${discount}`, value, total: (value * perc) / 100 }
@@ -23,7 +31,7 @@ const calculateEnrollment = ({ enrollmentPrice, data, discount, note }, separate
   } else if (discount) {
     return { ...result, discount: 'Valor combinado', value, total: discount * 1 }
   } else if(!classroom && family) {
-    return { ...result, discount: 'Desconto família', value, total: value }
+    return { ...result, discount: 'Desconto família', value, total: value + family }
   }
   return { ...result, value, total: value }
 }
@@ -32,18 +40,20 @@ const calculateTuitions = (separateFrequencies, enrollments, family) => {
   const subscribedList = map(enrollments, e => toString(e.data.classroom) || 'regularClass')
   const frequentedList = keys(separateFrequencies)
   const notSubscribedList = difference(frequentedList, subscribedList)
-  return map(notSubscribedList, id => {
+  return flatten(map(notSubscribedList, id => {
     const list = get(separateFrequencies, id)
     const classroom = get(list, '[0].classroom')
-    const value = classroom.tuition + (family ? -5 : 0)
-    return {
+    const familyDiscount = classroom.regularClass && family
+    const value = classroom.tuition + (familyDiscount ? -5 : 0)
+    return map(list, lesson => ({
+      classroom: classroom.regularClass ? null : classroom._id,
       value,
+      date: lesson.createdAt,
       title: `${classroom.title} - Avulsa`,
-      frequented: list.length,
-      discount: family ? 'Desconto família' : null,
-      total: value * list.length,
-    }
-  })
+      discount: familyDiscount ? 'Desconto família' : null,
+      total: value,
+    }))
+  }))
 }
 
 const frequencyByClassType = frequencies =>
