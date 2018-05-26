@@ -6,18 +6,8 @@ module.exports = function () {
     const frequency = method === 'find' ? result.data : [ result ]
     if(params.populatePractitioners) {
       await Promise.all(frequency.map(async attendance => {
-        if(!attendance.practitioners || attendance.practitioners.length === 0) {
-          return null
-        }
         delete params.populatePractitioners
-        const practitioners = await Promise.all(
-          attendance.practitioners.map(
-            async id => app.service('practitioners').get(id, params)
-              .then(person => person).catch(e => null)
-          )
-        )
-
-        attendance.practitioners = compact(practitioners)
+        attendance.practitioner = await app.service('practitioners').get(attendance.practitionerId, params)
       }))
     }
 

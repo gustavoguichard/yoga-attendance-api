@@ -6,23 +6,22 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema, SchemaTypes } = mongooseClient;
   const payments = new Schema({
-    total: { type: Number, required: true },
+    total: { type: Number, required: true, default: 0 },
     index: { type: String, required: true },
     note: { type: String },
     paidAt: { type: Date },
     practitionerId: { type: SchemaTypes.ObjectId, ref: 'practitioners', required: true },
+    frequented: [{ type: SchemaTypes.ObjectId, ref: 'frequency' }],
     status: { type: String, enum: ['open', 'paid', 'pending', 'confirmed'], required: true, default: 'open' },
     description: {
       enrollmentId: { type: SchemaTypes.ObjectId, ref: 'enrollment' },
-      classroom: { type: SchemaTypes.ObjectId, ref: 'classrooms' },
       enrollmentPrice: { type: String },
-      date: { type: Date },
-      discount: { type: String },
+      amount: { type: Number },
+      note: { type: String },
       title: { type: String, required: true },
+      discount: { type: String },
       value: { type: Number, required: true },
       total: { type: Number, required: true },
-      frequented: { type: Number },
-      amount: { type: Number },
     },
   }, {
     timestamps: true

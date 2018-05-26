@@ -7,7 +7,7 @@ module.exports = function (app) {
   const { Schema, SchemaTypes } = mongooseClient;
   const frequency = new Schema({
     practitionerId: { type: SchemaTypes.ObjectId, ref: 'practitioners' },
-    teacher: { type: SchemaTypes.ObjectId, ref: 'practitioners' },
+    teacher: { type: Boolean, required: true, default: false },
     classId: { type: SchemaTypes.ObjectId, ref: 'classrooms' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }

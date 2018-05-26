@@ -1,8 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const normalizeParams = require('../../hooks/normalize-params');
-const populateTeachers = require('../../hooks/populate-teachers');
 const populatePractitioners = require('../../hooks/populate-practitioners');
 const populateClassroom = require('../../hooks/populate-classroom');
+const updatePayments = require('../../hooks/update-payments');
 
 module.exports = {
   before: {
@@ -17,12 +17,12 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ populateTeachers(), populateClassroom(), populatePractitioners() ],
-    get: [ populateTeachers(), populateClassroom(), populatePractitioners() ],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    find: [ populateClassroom(), populatePractitioners() ],
+    get: [ populateClassroom(), populatePractitioners() ],
+    create: [ updatePayments() ],
+    update: [ updatePayments() ],
+    patch: [ updatePayments() ],
+    remove: [ updatePayments() ]
   },
 
   error: {
