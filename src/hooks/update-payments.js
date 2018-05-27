@@ -25,7 +25,7 @@ module.exports = function () {
       await frequented.length
         ? app.service('payments').patch(payment._id, {
           frequented,
-          total: frequented.length * payment.description.total,
+          total: (payment.description.enrollmentId ? 1 : frequented.length) * payment.description.total,
         })
         : app.service('payments').remove(payment._id)
     } else if(!result.teacher) {
@@ -39,6 +39,7 @@ module.exports = function () {
         practitionerId: result.practitionerId,
         frequented: [result._id],
         total: description.total,
+        createdAt: result.createdAt,
       })
     }
 
