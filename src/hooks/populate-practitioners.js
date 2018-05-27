@@ -3,11 +3,11 @@ const { compact } = require('lodash')
 module.exports = function () {
   return async function (hook) {
     const { app, method, result, params } = hook
-    const frequency = method === 'find' ? result.data : [ result ]
-    if(params.populatePractitioners && !!result.total) {
-      await Promise.all(frequency.map(async attendance => {
+    const records = method === 'find' ? result.data : [ result ]
+    if(params.populatePractitioners) {
+      await Promise.all(records.map(async record => {
         delete params.populatePractitioners
-        attendance.practitioner = await app.service('practitioners').get(attendance.practitionerId, params)
+        record.practitioner = await app.service('practitioners').get(record.practitionerId, params)
       }))
     }
 

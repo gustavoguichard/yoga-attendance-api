@@ -8,10 +8,11 @@ module.exports = function (app) {
   const payments = new Schema({
     total: { type: Number, required: true, default: 0 },
     index: { type: String, required: true },
-    note: { type: String },
-    paidAt: { type: Date },
     practitionerId: { type: SchemaTypes.ObjectId, ref: 'practitioners', required: true },
     frequented: [{ type: SchemaTypes.ObjectId, ref: 'frequency' }],
+    totalPaid: { type: Number, required: true, default: 0 },
+    note: { type: String },
+    paidAt: { type: Date },
     status: { type: String, enum: ['open', 'paid', 'pending', 'confirmed'], required: true, default: 'open' },
     description: {
       enrollmentId: { type: SchemaTypes.ObjectId, ref: 'enrollment' },

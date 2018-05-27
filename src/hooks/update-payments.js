@@ -1,4 +1,4 @@
-const { find, filter, get, map, toString, uniq } = require('lodash')
+const { find, filter, get, includes, map, toString, uniq } = require('lodash')
 const { buildIndex, calculateEnrollment } = require('../services/payment/payment.helpers')
 
 module.exports = function () {
@@ -10,27 +10,31 @@ module.exports = function () {
     const index = buildIndex(result, classroom)
 
     const payments = await app.service('payments').find({
-      query: {
-        index,
-        status: 'open',
-        practitionerId: result.practitionerId,
-      },
+      query: { index, practitionerId: result.practitionerId },
     })
 
-    if (payments.total) {
-      const payment = payments.data[0]
-      const frequented = (method === 'remove' || result.teacher)
+    const payment = find(payments.data, d => {
+      const isOpen = includes(['open', 'pending'], d.status)
+      const isEnrollment = d.description.enrollmentId
+      return isOpen || isEnrollment
+    })
+
+    if (payment) {
+      const shouldRemove = (method === 'remove' || result.teacher)
+      const frequented = shouldRemove
         ? filter(payment.frequented, f => toString(f) !== toString(result._id))
         : [ ...payment.frequented, result._id ]
+
       await frequented.length
         ? app.service('payments').patch(payment._id, {
-          frequented: uniq(map(frequented, toString)),
-          total: (payment.description.enrollmentId ? 1 : frequented.length) * payment.description.total,
-        })
+            frequented: uniq(map(frequented, toString)),
+            total: (payment.description.enrollmentId ? 1 : frequented.length) * payment.description.total,
+          })
         : app.service('payments').remove(payment._id)
     } else if(!result.teacher) {
       const practitioner = await app.service('practitioners')
         .get(result.practitionerId, { query: { populateEnrollments: true } })
+
       const description = calculateEnrollment(practitioner, classroom)
 
       await app.service('payments').create({
