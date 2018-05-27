@@ -1,4 +1,4 @@
-const { find, filter, get, toString, uniq } = require('lodash')
+const { find, filter, get, map, toString, uniq } = require('lodash')
 const { buildIndex, calculateEnrollment } = require('../services/payment/payment.helpers')
 
 module.exports = function () {
@@ -21,10 +21,10 @@ module.exports = function () {
       const payment = payments.data[0]
       const frequented = (method === 'remove' || result.teacher)
         ? filter(payment.frequented, f => toString(f) !== toString(result._id))
-        : uniq([ ...payment.frequented, result._id ])
+        : [ ...payment.frequented, result._id ]
       await frequented.length
         ? app.service('payments').patch(payment._id, {
-          frequented,
+          frequented: uniq(map(frequented, toString)),
           total: (payment.description.enrollmentId ? 1 : frequented.length) * payment.description.total,
         })
         : app.service('payments').remove(payment._id)
@@ -37,7 +37,7 @@ module.exports = function () {
         index,
         description,
         practitionerId: result.practitionerId,
-        frequented: [result._id],
+        frequented: [toString(result._id)],
         total: description.total,
         createdAt: result.createdAt,
       })
