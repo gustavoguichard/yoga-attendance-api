@@ -45,6 +45,9 @@ const calculateEnrollment = ({ enrollments, family }, classroom) => {
   }
 }
 
+const getPrevDate = (unit = 'month', unitsAgo = 0) =>
+  moment().subtract(unitsAgo, unit)
+
 const getTimeRangeQuery = (unit = 'month', unitsAgo = 0) => ({
   $gte: getPrevDate(unit, unitsAgo).startOf(unit)._d,
   $lt: getPrevDate(unit, unitsAgo).endOf(unit)._d,
