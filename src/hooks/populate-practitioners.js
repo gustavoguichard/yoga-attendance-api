@@ -1,5 +1,3 @@
-const { compact } = require('lodash')
-
 module.exports = function () {
   return async function (hook) {
     const { app, method, result, params } = hook
@@ -11,6 +9,6 @@ module.exports = function () {
       }))
     }
 
-    return hook;
-  };
-};
+    return hook
+  }
+}

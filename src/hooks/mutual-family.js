@@ -32,6 +32,6 @@ module.exports = function () {
       }))
     }
 
-    return hook;
-  };
-};
+    return hook
+  }
+}

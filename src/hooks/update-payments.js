@@ -1,10 +1,10 @@
-const { find, filter, get, includes, map, toString, uniq } = require('lodash')
+const { find, filter, includes, map, toString, uniq } = require('lodash')
 const { buildIndex, calculateEnrollment } = require('../services/payment/payment.helpers')
 
 module.exports = function () {
   return async function (hook) {
 
-    const { app, method, result, params } = hook
+    const { app, method, result } = hook
 
     const classroom = await app.service('classrooms').get(result.classId)
     const index = buildIndex(result, classroom)
@@ -25,11 +25,11 @@ module.exports = function () {
         ? filter(payment.frequented, f => toString(f) !== toString(result._id))
         : [ ...payment.frequented, result._id ]
 
-      await frequented.length
-        ? app.service('payments').patch(payment._id, {
-            frequented: uniq(map(frequented, toString)),
-            total: (payment.description.enrollmentId ? 1 : frequented.length) * payment.description.total,
-          })
+      await frequented.length ?
+        app.service('payments').patch(payment._id, {
+          frequented: uniq(map(frequented, toString)),
+          total: (payment.description.enrollmentId ? 1 : frequented.length) * payment.description.total,
+        })
         : app.service('payments').remove(payment._id)
     } else if(!result.teacher) {
       const practitioner = await app.service('practitioners')
@@ -47,8 +47,6 @@ module.exports = function () {
       })
     }
 
-    const paymentsLog = await app.service('payments').find()
-
-    return hook;
-  };
-};
+    return hook
+  }
+}

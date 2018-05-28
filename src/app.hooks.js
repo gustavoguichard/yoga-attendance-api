@@ -1,6 +1,6 @@
 // Application hooks that run for every service
-const logger = require('./hooks/logger');
-const { setNow } = require('feathers-hooks-common');
+const logger = require('./hooks/logger')
+const { setNow } = require('feathers-hooks-common')
 
 module.exports = {
   before: {
@@ -32,4 +32,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}

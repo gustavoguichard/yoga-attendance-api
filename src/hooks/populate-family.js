@@ -15,7 +15,7 @@ module.exports = function () {
 
         const family = await Promise.all(person.family.map(
           async id => app.service('practitioners').get(id)
-            .then(relative => relative).catch(e => {
+            .then(relative => relative).catch(() => {
               app.service('practitioners').patch(person._id, {
                 family: filter(person.family, p => toString(p) !== toString(id))
               })
@@ -27,6 +27,6 @@ module.exports = function () {
       }))
     }
 
-    return hook;
-  };
-};
+    return hook
+  }
+}

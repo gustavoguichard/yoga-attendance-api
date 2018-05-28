@@ -8,6 +8,6 @@ module.exports = function () {
       lesson.teacher = teacher
     }))
 
-    return hook;
-  };
-};
+    return hook
+  }
+}

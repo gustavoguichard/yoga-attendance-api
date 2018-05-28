@@ -11,7 +11,7 @@ module.exports = function () {
     if(method === 'remove') {
       const result = await app.service('practitioners').find({ query: { family: id } })
       if(result.total > 0) {
-        await Promise.all(practitioners.map(async person => {
+        await Promise.all(result.map(async person => {
           if(!person.family) {
             return null
           }
@@ -21,6 +21,6 @@ module.exports = function () {
         }))
       }
     }
-    return hook;
-  };
-};
+    return hook
+  }
+}

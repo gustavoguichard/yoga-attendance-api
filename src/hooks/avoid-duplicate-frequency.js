@@ -1,4 +1,3 @@
-const moment = require('moment');
 const { getTimeRangeQuery } = require('../services/payment/payment.helpers')
 
 module.exports = function () {
@@ -16,6 +15,6 @@ module.exports = function () {
       hook.result = hook.data
     }
 
-    return hook;
-  };
-};
+    return hook
+  }
+}

@@ -3,8 +3,8 @@
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { Schema, SchemaTypes } = mongooseClient;
+  const mongooseClient = app.get('mongooseClient')
+  const { Schema, SchemaTypes } = mongooseClient
   const payments = new Schema({
     total: { type: Number, required: true, default: 0 },
     index: { type: String, required: true },
@@ -26,7 +26,7 @@ module.exports = function (app) {
     },
   }, {
     timestamps: true
-  });
+  })
 
-  return mongooseClient.model('payments', payments);
-};
+  return mongooseClient.model('payments', payments)
+}

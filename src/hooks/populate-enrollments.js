@@ -18,7 +18,7 @@ module.exports = function () {
             .then(enrl => {
               enrollment.data = enrl
               return enrollment
-            }).catch(e => {
+            }).catch(() => {
               app.service('practitioners').patch(person._id, {
                 enrollments: filter(person.enrollments, e => toString(e.enrollmentId) !== toString(enrollment.enrollmentId))
               })
@@ -30,6 +30,6 @@ module.exports = function () {
       }))
     }
 
-    return hook;
-  };
-};
+    return hook
+  }
+}

@@ -3,8 +3,8 @@ require('mongoose-type-email')
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { SchemaTypes, Schema } = mongooseClient;
+  const mongooseClient = app.get('mongooseClient')
+  const { SchemaTypes, Schema } = mongooseClient
   const users = new Schema({
 
     email: {
@@ -22,7 +22,7 @@ module.exports = function (app) {
 
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
-  });
+  })
 
-  return mongooseClient.model('users', users);
-};
+  return mongooseClient.model('users', users)
+}

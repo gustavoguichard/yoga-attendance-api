@@ -1,8 +1,6 @@
-const { compact, filter, map, difference, uniq, toString } = require('lodash')
-
 module.exports = function () {
   return async function (hook) {
-    const { app, params, result, type } = hook
+    const { app, params, result } = hook
 
     if(params.isProcessingMutualPrice || !result.regularClass) {
       return hook
@@ -18,6 +16,6 @@ module.exports = function () {
       return app.service('classrooms').patch(classroom._id, { tuition: result.tuition }, { isProcessingMutualPrice: true })
     }))
 
-    return hook;
-  };
-};
+    return hook
+  }
+}

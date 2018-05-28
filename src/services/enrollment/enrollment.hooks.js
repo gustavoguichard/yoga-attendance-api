@@ -1,6 +1,6 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const undecorateEnrollment = require('../../hooks/undecorate-enrollment');
-const decorateEnrollment = require('../../hooks/decorate-enrollment');
+const { authenticate } = require('@feathersjs/authentication').hooks
+const undecorateEnrollment = require('../../hooks/undecorate-enrollment')
+const decorateEnrollment = require('../../hooks/decorate-enrollment')
 
 
 module.exports = {
@@ -33,4 +33,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}

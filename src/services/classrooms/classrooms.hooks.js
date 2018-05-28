@@ -1,6 +1,6 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const populateTeachers = require('../../hooks/populate-teachers');
-const mutualRegularPrice = require('../../hooks/mutual-regular-price');
+const { authenticate } = require('@feathersjs/authentication').hooks
+const populateTeachers = require('../../hooks/populate-teachers')
+const mutualRegularPrice = require('../../hooks/mutual-regular-price')
 
 module.exports = {
   before: {
@@ -32,4 +32,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}

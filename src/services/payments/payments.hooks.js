@@ -1,6 +1,6 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const normalizeParams = require('../../hooks/normalize-params');
-const populatePractitioners = require('../../hooks/populate-practitioners');
+const { authenticate } = require('@feathersjs/authentication').hooks
+const normalizeParams = require('../../hooks/normalize-params')
+const populatePractitioners = require('../../hooks/populate-practitioners')
 
 module.exports = {
   before: {
@@ -32,4 +32,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}

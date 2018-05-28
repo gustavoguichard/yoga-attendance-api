@@ -16,9 +16,9 @@ module.exports = function () {
           existingCode = includes(accessCodes, tempCode)
         }
         hook.data.accessCode = tempCode
-        return hook;
-      });
+        return hook
+      })
     }
-    return Promise.resolve(hook);
-  };
-};
+    return Promise.resolve(hook)
+  }
+}

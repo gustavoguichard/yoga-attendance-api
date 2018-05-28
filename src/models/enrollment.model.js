@@ -3,8 +3,8 @@
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { Schema, SchemaTypes } = mongooseClient;
+  const mongooseClient = app.get('mongooseClient')
+  const { Schema, SchemaTypes } = mongooseClient
   const enrollment = new Schema({
     type: { type: String, enum: ['monthly', 'yearly'], required: true, default: 'monthly' },
     pricing: [{
@@ -15,7 +15,7 @@ module.exports = function (app) {
     classroom: { type: SchemaTypes.ObjectId, ref: 'classrooms' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
-  });
+  })
 
-  return mongooseClient.model('enrollment', enrollment);
-};
+  return mongooseClient.model('enrollment', enrollment)
+}
