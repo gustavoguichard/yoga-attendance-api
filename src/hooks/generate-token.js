@@ -6,16 +6,18 @@ const generateFromBD = bd => moment(bd).format('DDMM')
 
 module.exports = function () {
   return function (hook) {
-    if(!hook.data.accessCode) {
-      return hook.service.find({ query: { $limit: 10000, $select: ['accessCode'] } }).then((data) => {
+    const { app, data } = hook
+
+    if(!data.accessCode) {
+      return app.service('users').find({ query: { $limit: 10000, $select: ['accessCode'] } }).then((data) => {
         const accessCodes = map(data, 'accessCode')
-        let tempCode = hook.data.birthdate && generateFromBD(hook.data.birthdate)
+        let tempCode = data.birthdate && generateFromBD(data.birthdate)
         let existingCode = tempCode ? includes(accessCodes, tempCode) : true
         while(existingCode) {
           tempCode = generateRandom()
           existingCode = includes(accessCodes, tempCode)
         }
-        hook.data.accessCode = tempCode
+        data.accessCode = tempCode
         return hook
       })
     }

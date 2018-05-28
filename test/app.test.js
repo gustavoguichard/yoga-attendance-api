@@ -12,14 +12,13 @@ describe('Feathers application tests', () => {
     this.server.close(done)
   })
 
-  it('starts and shows the index page', () => {
-    return rp('http://localhost:3030').then(body =>
-      assert.ok(body.indexOf('<html>') !== -1)
-    )
+  it('starts and shows the index page', async () => {
+    const body = await rp('http://localhost:3030')
+    assert.ok(body.indexOf('<html>') !== -1)
   })
 
   describe('404', function() {
-    it('shows a 404 HTML page', () => {
+    it('shows a 404 HTML page', async () => {
       return rp({
         url: 'http://localhost:3030/path/to/nowhere',
         headers: {
