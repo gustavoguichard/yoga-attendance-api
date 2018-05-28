@@ -45,12 +45,12 @@ const calculateEnrollment = ({ enrollments, family }, classroom) => {
   }
 }
 
-const getPrevDate = (unit = 'month', unitsAgo = 0) =>
-  moment().subtract(unitsAgo, unit)
+const getPrevDate = (unit = 'month', unitsAgo = 0, date) =>
+  moment(date).subtract(unitsAgo, unit)
 
-const getTimeRangeQuery = (unit = 'month', unitsAgo = 0) => ({
-  $gte: getPrevDate(unit, unitsAgo).startOf(unit)._d,
-  $lt: getPrevDate(unit, unitsAgo).endOf(unit)._d,
+const getTimeRangeQuery = (unit = 'month', unitsAgo = 0, date) => ({
+  $gte: getPrevDate(unit, unitsAgo, date).startOf(unit)._d,
+  $lt: getPrevDate(unit, unitsAgo, date).endOf(unit)._d,
 })
 
 module.exports = {
