@@ -1,5 +1,5 @@
 const { find, filter, includes, map, toString, uniq } = require('lodash')
-const { buildIndex, calculateEnrollment } = require('../services/payment/payment.helpers')
+const { buildIndex, calculateEnrollment } = require('../services/payments/payment.helpers')
 
 module.exports = function () {
   return async function (hook) {

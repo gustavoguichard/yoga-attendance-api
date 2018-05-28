@@ -1,4 +1,4 @@
-const { getTimeRangeQuery } = require('../services/payment/payment.helpers')
+const { getTimeRangeQuery } = require('../utils/date-helpers')
 
 module.exports = function () {
   return async function (hook) {
