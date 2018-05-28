@@ -23,11 +23,12 @@
   },
   "scripts": {
     "test": "npm run eslint && npm run mocha",
+    "coverage": "npm run clean && NODE_ENV=test istanbul cover node_modules/mocha/bin/_mocha -- test/ --recursive --exit",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
     "dev": "nodemon src/",
-    "clean": "shx rm -rf test/data/",
-    "mocha": "NODE_ENV=test node test/cleandb.js && NODE_ENV=test mocha test/ --recursive --exit"
+    "clean": "NODE_ENV=test node test/cleandb.js",
+    "mocha": "npm run clean && NODE_ENV=test mocha test/ --recursive --exit"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.2",
@@ -58,6 +59,7 @@
   "devDependencies": {
     "eslint": "^4.1.1",
     "feathers-memory": "^2.1.1",
+    "istanbul": "^1.1.0-alpha.1",
     "mocha": "^3.4.2",
     "mongo-clean": "^2.0.0",
     "nodemon": "^1.11.0",
