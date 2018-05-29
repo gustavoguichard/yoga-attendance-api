@@ -1,10 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const normalizeParams = require('../../hooks/normalize-params')
-const populatePractitioners = require('../../hooks/populate-practitioners')
+const { paramsFromClient } = require('feathers-hooks-common')
+const { populatePractitioners } = require('../../hooks/populate')
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), normalizeParams() ],
+    all: [ authenticate('jwt'), paramsFromClient('populatePractitioners') ],
     find: [],
     get: [],
     create: [],
@@ -15,8 +15,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ populatePractitioners() ],
-    get: [ populatePractitioners() ],
+    find: [ populatePractitioners ],
+    get: [ populatePractitioners ],
     create: [],
     update: [],
     patch: [],

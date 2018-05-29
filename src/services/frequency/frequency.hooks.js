@@ -1,13 +1,12 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const normalizeParams = require('../../hooks/normalize-params')
+const { paramsFromClient } = require('feathers-hooks-common')
 const avoidDuplicateFrequency = require('../../hooks/avoid-duplicate-frequency')
-const populatePractitioners = require('../../hooks/populate-practitioners')
-const populateClassroom = require('../../hooks/populate-classroom')
+const { populatePractitioners, populateClassroom } = require('../../hooks/populate')
 const updatePayments = require('../../hooks/update-payments')
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), normalizeParams() ],
+    all: [ authenticate('jwt'), paramsFromClient('populatePractitioners', 'populateClassroom') ],
     find: [],
     get: [],
     create: [ avoidDuplicateFrequency() ],
@@ -18,8 +17,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ populateClassroom(), populatePractitioners() ],
-    get: [ populateClassroom(), populatePractitioners() ],
+    find: [ populateClassroom, populatePractitioners ],
+    get: [ populateClassroom, populatePractitioners ],
     create: [ updatePayments() ],
     update: [ updatePayments() ],
     patch: [ updatePayments() ],

@@ -1,8 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const normalizeParams = require('../../hooks/normalize-params')
+const { paramsFromClient } = require('feathers-hooks-common')
 const generateToken = require('../../hooks/generate-token')
-const populateFamily = require('../../hooks/populate-family')
-const populateEnrollments = require('../../hooks/populate-enrollments')
+const { populateFamily } = require('../../hooks/populate')
 const mutualFamily = require('../../hooks/mutual-family')
 const removeMutualFamily = require('../../hooks/remove-mutual-family')
 const { alterItems } = require('feathers-hooks-common/lib/services')
@@ -14,7 +13,7 @@ const decoratePractitioner = alterItems(rec => {
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), normalizeParams() ],
+    all: [ authenticate('jwt'), paramsFromClient('populateFamily') ],
     find: [],
     get: [],
     create: [ mutualFamily(), generateToken() ],
@@ -25,8 +24,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ populateFamily(), populateEnrollments(), decoratePractitioner ],
-    get: [ populateFamily(), populateEnrollments(), decoratePractitioner ],
+    find: [ populateFamily, decoratePractitioner ],
+    get: [ populateFamily, decoratePractitioner ],
     create: [ mutualFamily() ],
     update: [ mutualFamily() ],
     patch: [ mutualFamily() ],

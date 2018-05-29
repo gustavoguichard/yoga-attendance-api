@@ -1,15 +1,16 @@
+const { get } = require('lodash')
+const { paramsFromClient } = require('feathers-hooks-common')
 const { authenticate } = require('@feathersjs/authentication').hooks
+const { populateClassroom } = require('../../hooks/populate')
 const { alterItems } = require('feathers-hooks-common/lib/services')
 
-const decorateEnrollment = alterItems(async (rec, hook) => {
-  const classroom = rec.classroom ? await hook.app.service('classrooms').get(rec.classroom) : { title: 'Aulas regulares' }
-  rec.className = classroom.title
-  return rec
-})
+const decorateEnrollment = alterItems(rec =>
+  rec.className = get(rec, 'classroom.title') || 'Aulas regulares'
+)
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [ authenticate('jwt'), paramsFromClient('populateClassroom') ],
     find: [],
     get: [],
     create: [],
@@ -20,8 +21,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ decorateEnrollment ],
-    get: [ decorateEnrollment ],
+    find: [ populateClassroom, decorateEnrollment ],
+    get: [ populateClassroom, decorateEnrollment ],
     create: [],
     update: [],
     patch: [],

@@ -12,7 +12,7 @@ module.exports = function (app) {
       value: { type: Number },
       amount: { type: Number },
     }],
-    classroom: { type: SchemaTypes.ObjectId, ref: 'classrooms' },
+    classId: { type: SchemaTypes.ObjectId, ref: 'classrooms' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   })

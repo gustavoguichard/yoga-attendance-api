@@ -9,7 +9,7 @@ describe('\'enrollment\' service', () => {
   })
 
   describe('decorates the enrollment with className', () => {
-    it('className is "Aulas regulares" when no classroom is given', async () => {
+    it('className is "Aulas regulares" when no classId is given', async () => {
       const enrollment = await app.service('enrollment').create({
         pricing: {
           desc: '1x por semana',
@@ -30,10 +30,12 @@ describe('\'enrollment\' service', () => {
           desc: '1x por semana',
           value: 100,
         },
-        classroom: classroom._id,
+        classId: classroom._id,
       })
       const resp = await app.service('enrollment').get(enrollment._id)
-      assert.equal(resp.className, 'Special class')
+      const resp2 = await app.service('enrollment').get(enrollment._id, { populateClassroom: true })
+      assert.equal(resp.className, 'Aulas regulares')
+      assert.equal(resp2.className, 'Special class')
     })
   })
 })
