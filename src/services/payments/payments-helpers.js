@@ -29,7 +29,7 @@ const calculateEnrollment = ({ enrollments, family }, classroom) => {
       return { discount: `Desconto: R$ ${discount},00`, value, total: value + toInteger(discount) }
     } else if (discount) {
       return { discount: 'Valor combinado', value, total: toInteger(discount) }
-    } else if(classroom.regularClass && family.length) {
+    } else if(classroom.regularClass && family && family.length) {
       return { discount: 'Desconto família', value, total: value - FAMILY_DISCOUNT }
     }
     return { value, total: value }
@@ -46,6 +46,7 @@ const calculateEnrollment = ({ enrollments, family }, classroom) => {
 }
 
 module.exports = {
+  classId,
   buildIndex,
   calculateEnrollment,
 }
