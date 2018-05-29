@@ -5,7 +5,7 @@ module.exports = function () {
     const { app, data } = hook
     const frequencies = await app.service('frequency').find({
       query: {
-        createdAt: getTimeRangeQuery('day', 0, data.createdAt),
+        createdAt: getTimeRangeQuery(0, 'day', data.createdAt),
         practitionerId: data.practitionerId,
         classId: data.classId,
       }

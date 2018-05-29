@@ -12,24 +12,24 @@ module.exports = function () {
       params.oldFamily = []
       if(id) {
         const practitioner = await app.service('practitioners').get(id)
-        params.oldFamily = compact(map(practitioner.family, toString))
+        params.oldFamily = compact(practitioner.family)
       }
     } else {
-      const newFamily = compact(map(data.family, '_id'))
-      const removed = difference(params.oldFamily, newFamily)
-      const added = difference(newFamily, params.oldFamily)
+      const newFamily = compact(map(data.family, toString))
+      const searchIn = array => ({ query: { _id: { $in: array } }})
 
-      await Promise.all(removed.map(async _id => {
-        const person = await app.service('practitioners').get(_id)
+      const removed = await app.service('practitioners').find(searchIn(difference(params.oldFamily, newFamily)))
+      const added = await app.service('practitioners').find(searchIn(difference(newFamily, params.oldFamily)))
+
+      removed.data.map(async person => {
         const family = filter(person.family, p => toString(p) !== toString(result._id))
-        return app.service('practitioners').patch(_id, { family }, { isProcessingFamily: true })
-      }))
+        return app.service('practitioners').patch(person._id, { family }, { isProcessingFamily: true })
+      })
 
-      await Promise.all(added.map(async _id => {
-        const person = await app.service('practitioners').get(_id)
+      added.data.map(async person => {
         const family = uniq([...person.family, result._id])
-        return app.service('practitioners').patch(_id, { family }, { isProcessingFamily: true })
-      }))
+        return app.service('practitioners').patch(person._id, { family }, { isProcessingFamily: true })
+      })
     }
 
     return hook

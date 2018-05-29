@@ -1,11 +1,11 @@
 const moment = require('moment')
 
-const getPrevDate = (unit = 'month', unitsAgo = 0, date) =>
+const getPrevDate = (unitsAgo = 0, unit = 'month', date) =>
   moment(date).subtract(unitsAgo, unit)
 
-const getTimeRangeQuery = (unit = 'month', unitsAgo = 0, date) => ({
-  $gte: getPrevDate(unit, unitsAgo, date).startOf(unit)._d,
-  $lt: getPrevDate(unit, unitsAgo, date).endOf(unit)._d,
+const getTimeRangeQuery = (unitsAgo = 0, unit = 'month', date) => ({
+  $gte: getPrevDate(unitsAgo, unit, date).startOf(unit)._d,
+  $lt: getPrevDate(unitsAgo, unit, date).endOf(unit)._d,
 })
 
 module.exports = {
