@@ -5,7 +5,6 @@ const populateFamily = require('../../hooks/populate-family')
 const populateEnrollments = require('../../hooks/populate-enrollments')
 const mutualFamily = require('../../hooks/mutual-family')
 const removeMutualFamily = require('../../hooks/remove-mutual-family')
-const undecoratePractitioner = require('../../hooks/undecorate-practitioner')
 const decoratePractitioner = require('../../hooks/decorate-practitioner')
 
 module.exports = {
@@ -13,9 +12,9 @@ module.exports = {
     all: [ authenticate('jwt'), normalizeParams() ],
     find: [],
     get: [],
-    create: [ undecoratePractitioner(), mutualFamily(), generateToken() ],
-    update: [ undecoratePractitioner(), mutualFamily() ],
-    patch: [ undecoratePractitioner(), mutualFamily() ],
+    create: [ mutualFamily(), generateToken() ],
+    update: [ mutualFamily() ],
+    patch: [ mutualFamily() ],
     remove: []
   },
 

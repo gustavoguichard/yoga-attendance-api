@@ -1,5 +1,4 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const undecorateEnrollment = require('../../hooks/undecorate-enrollment')
 const decorateEnrollment = require('../../hooks/decorate-enrollment')
 
 
@@ -8,9 +7,9 @@ module.exports = {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [ undecorateEnrollment() ],
-    update: [ undecorateEnrollment() ],
-    patch: [ undecorateEnrollment() ],
+    create: [],
+    update: [],
+    patch: [],
     remove: []
   },
 

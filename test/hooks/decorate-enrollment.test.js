@@ -28,22 +28,15 @@ describe(`'decorate-enrollment' hook`, () => {
   })
 
   it('adds className according to the enrollment classroom ID', async () => {
-    await app.service('enrollment').create({
-      ...data,
-      classroom: classroom.id,
-    })
-
-    const enrollments = await app.service('enrollment').find()
-    const enrollment = enrollments.data[0]
+    await app.service('enrollment').create({ ...data, classroom: classroom.id })
+    const enrollment = await app.service('enrollment').get(0)
 
     assert.equal(enrollment.className, 'Some special class')
   })
 
   it('adds className "Aulas regulares" when there is no specific class', async () => {
     await app.service('enrollment').create(data)
-
-    const enrollments = await app.service('enrollment').find()
-    const enrollment = enrollments.data[0]
+    const enrollment = await app.service('enrollment').get(0)
 
     assert.equal(enrollment.className, 'Aulas regulares')
   })
