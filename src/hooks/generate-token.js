@@ -9,8 +9,8 @@ module.exports = function () {
     const { app, data } = hook
 
     if(!data.accessCode) {
-      return app.service('users').find({ query: { $limit: 10000, $select: ['accessCode'] } }).then((data) => {
-        const accessCodes = map(data, 'accessCode')
+      return app.service('practitioners').find({ query: { $limit: 10000, $select: ['accessCode']} }).then(results => {
+        const accessCodes = map(results.data, 'accessCode')
         let tempCode = data.birthdate && generateFromBD(data.birthdate)
         let existingCode = tempCode ? includes(accessCodes, tempCode) : true
         while(existingCode) {

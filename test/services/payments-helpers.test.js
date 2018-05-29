@@ -89,8 +89,6 @@ describe(`'payments' helpers`, () => {
       const result = subject.calculateEnrollment({}, classroom)
       const result2 = subject.calculateEnrollment(person, classroom)
 
-      console.warn(result2)
-
       assert.equal(result.total, 180)
       assert.equal(result.title, 'Aulas Regulares - Avulsa')
       assert.equal(result2.title, 'Aulas Regulares - 1x por semana')

@@ -30,8 +30,6 @@ describe(`'avoid-duplicate-frequency' hook`, () => {
       createdAt: moment()._d,
     })
 
-    // console.warn(freq)
-
     assert.ok(!freq.id)
   })
 

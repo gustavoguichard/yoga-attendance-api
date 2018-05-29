@@ -6,10 +6,9 @@ const mutualFamily = require('../../hooks/mutual-family')
 const removeMutualFamily = require('../../hooks/remove-mutual-family')
 const { alterItems } = require('feathers-hooks-common/lib/services')
 
-const decoratePractitioner = alterItems(rec => {
+const decoratePractitioner = alterItems(rec =>
   rec.displayName = rec.nickName || rec.fullName
-  return rec
-})
+)
 
 module.exports = {
   before: {
