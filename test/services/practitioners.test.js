@@ -50,12 +50,12 @@ describe('\'practitioners\' service', () => {
   })
 
   describe('generateToken hook', async () => {
-    it('generates from birthdate if there is no equal code', async () => {
+    it('generates a 4 digit code from birthdate if there is no equal code', async () => {
       const result = await service.get(practitioner._id)
       assert.equal(result.accessCode, '1307')
     })
 
-    it('generates a random one if birthdate is already set', async () => {
+    it('generates a random 4 digit code if birthdate is already set', async () => {
       const result = await service.create({
         fullName: 'Relative',
         birthdate: moment('1994-07-13')._d,
