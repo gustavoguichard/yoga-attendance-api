@@ -1,6 +1,11 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const decorateEnrollment = require('../../hooks/decorate-enrollment')
+const { alterItems } = require('feathers-hooks-common/lib/services')
 
+const decorateEnrollment = alterItems(async (rec, hook) => {
+  const classroom = rec.classroom ? await hook.app.service('classrooms').get(rec.classroom) : { title: 'Aulas regulares' }
+  rec.className = classroom.title
+  return rec
+})
 
 module.exports = {
   before: {
@@ -15,8 +20,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ decorateEnrollment() ],
-    get: [ decorateEnrollment() ],
+    find: [ decorateEnrollment ],
+    get: [ decorateEnrollment ],
     create: [],
     update: [],
     patch: [],

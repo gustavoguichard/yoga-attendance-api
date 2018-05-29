@@ -5,7 +5,12 @@ const populateFamily = require('../../hooks/populate-family')
 const populateEnrollments = require('../../hooks/populate-enrollments')
 const mutualFamily = require('../../hooks/mutual-family')
 const removeMutualFamily = require('../../hooks/remove-mutual-family')
-const decoratePractitioner = require('../../hooks/decorate-practitioner')
+const { alterItems } = require('feathers-hooks-common/lib/services')
+
+const decoratePractitioner = alterItems(rec => {
+  rec.displayName = rec.nickName || rec.fullName
+  return rec
+})
 
 module.exports = {
   before: {
@@ -20,8 +25,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ populateFamily(), populateEnrollments(), decoratePractitioner() ],
-    get: [ populateFamily(), populateEnrollments(), decoratePractitioner() ],
+    find: [ populateFamily(), populateEnrollments(), decoratePractitioner ],
+    get: [ populateFamily(), populateEnrollments(), decoratePractitioner ],
     create: [ mutualFamily() ],
     update: [ mutualFamily() ],
     patch: [ mutualFamily() ],
