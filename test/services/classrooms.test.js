@@ -1,5 +1,7 @@
 const assert = require('assert')
 const app = require('../../src/app')
+const fx = require('../fixtures')
+const beforeAll = require('../beforeAll')
 
 const service = app.service('classrooms')
 describe('\'classrooms\' service', async () => {
@@ -9,22 +11,16 @@ describe('\'classrooms\' service', async () => {
 
   let practitioner, classroom
 
-  before(async () => {
-    practitioner = await app.service('practitioners').create({
-      fullName: 'Some practitioner',
-      birthdate: new Date(),
-    })
-
-    classroom = await service.create({
-      title: 'Sunday class',
-      tuition: 100,
-      teacher: practitioner._id,
-    })
+  beforeAll(async () => {
+    await app.service('practitioners').remove(null)
+    await service.remove(null)
+    practitioner = await fx.practitioner()
+    classroom = await fx.classroom({ teacher: practitioner._id })
   })
 
   it('populates the teacher field', async () => {
     const result = await service.get(classroom._id)
-    assert.equal(result.teacher.fullName, 'Some practitioner')
+    assert.equal(result.teacher.fullName, 'Test user')
   })
 
   it('synchronize tuition for regular classes', async () => {

@@ -13,7 +13,8 @@ const buildIndex = ({ createdAt, practitionerId }, classroom) => {
 }
 
 const calculateEnrollment = ({ enrollments, family }, classroom) => {
-  const enrollment = find(enrollments, en => en.data.classId === classId(classroom))
+  const stringIfExistent = value => value ? toString(value) : value
+  const enrollment = find(enrollments, en => stringIfExistent(en.data.classId) === classId(classroom))
   const { enrollmentId, enrollmentPrice, data, discount, note } = enrollment || {}
   const { pricing } = data || {}
   const priceData = find(pricing, p => toString(p._id) === enrollmentPrice)

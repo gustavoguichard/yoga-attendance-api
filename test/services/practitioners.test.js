@@ -2,6 +2,8 @@ const assert = require('assert')
 const moment = require('moment')
 const md5 = require('md5')
 const { includes, isString, isNaN } = require('lodash')
+const fx = require('../fixtures')
+const beforeAll = require('../beforeAll')
 const app = require('../../src/app')
 const removeMutualFamily = require('../../src/hooks/remove-mutual-family')
 
@@ -14,17 +16,14 @@ describe('\'practitioners\' service', async () => {
 
   let practitioner, relative
 
-  before(async () => {
+  beforeAll(async () => {
     await service.remove(null)
-    relative = await service.create({
+    relative = await fx.practitioner({
       fullName: 'Relative',
-      email: 'test2@test.com',
-      picture: 'foo',
-    })
+      email: 'bar',
+    }, ['picture', 'accessCode'])
 
-    practitioner = await service.create({
-      fullName: 'Test user',
-      email: 'test@test.com',
+    practitioner = await fx.practitioner({
       birthdate: moment('1986-07-13')._d,
       family: [relative._id],
     })

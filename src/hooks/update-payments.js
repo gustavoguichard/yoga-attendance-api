@@ -6,6 +6,10 @@ module.exports = function () {
 
     const { app, method, result } = hook
 
+    if(!result || !result.classId) {
+      return hook
+    }
+
     const classroom = await app.service('classrooms').get(result.classId)
     const index = buildIndex(result, classroom)
 
@@ -13,10 +17,11 @@ module.exports = function () {
       query: { index, practitionerId: result.practitionerId },
     })
 
+    const isOpen = ({ status }) => includes(['open', 'pending'], status)
+
     const payment = find(payments.data, d => {
-      const isOpen = includes(['open', 'pending'], d.status)
       const isEnrollment = d.description.enrollmentId
-      return isOpen || isEnrollment
+      return isOpen(d) || isEnrollment
     })
 
     if (payment) {
@@ -25,13 +30,15 @@ module.exports = function () {
         ? filter(payment.frequented, f => toString(f) !== toString(result._id))
         : [ ...payment.frequented, result._id ]
 
-      await frequented.length ?
-        app.service('payments').patch(payment._id, {
+      if (frequented.length) {
+        await app.service('payments').patch(payment._id, {
           frequented: uniq(map(frequented, toString)),
           total: (payment.description.enrollmentId ? 1 : frequented.length) * payment.description.total,
         })
-        : app.service('payments').remove(payment._id)
-    } else if(!result.teacher) {
+      } else {
+        await app.service('payments').remove(payment._id)
+      }
+    } else if(!result.teacher && includes(['create', 'update', 'patch'], method)) {
       const practitioner = await app.service('practitioners')
         .get(result.practitionerId, { populateEnrollments: true })
 

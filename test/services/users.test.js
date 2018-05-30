@@ -1,18 +1,15 @@
 const assert = require('assert')
 const app = require('../../src/app')
+const fx = require('../fixtures')
 
+const service = app.service('users')
 describe('\'users\' service', () => {
   it('registered the service', () => {
-    const service = app.service('users')
-
     assert.ok(service, 'Registered the service')
   })
 
   it('creates a user, encrypts password and adds gravatar', async () => {
-    const user = await app.service('users').create({
-      email: 'test@example.com',
-      password: 'secret'
-    })
+    const user = await fx.user()
     assert.ok(user.password !== 'secret')
   })
 
@@ -20,7 +17,7 @@ describe('\'users\' service', () => {
     // Setting `provider` indicates an external request
     const params = { provider: 'rest' }
 
-    const user = await app.service('users').create({
+    const user = await service.create({
       email: 'test2@example.com',
       password: 'secret'
     }, params)

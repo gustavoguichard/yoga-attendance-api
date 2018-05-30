@@ -5,7 +5,6 @@ module.exports = function () {
     const { app, method, result, params } = hook
     const practitioners = method === 'find' ? result.data : [ result ]
     if(params.populateEnrollments) {
-
       await Promise.all(practitioners.map(async person => {
         if(!person.enrollments || person.enrollments.length === 0) {
           return null
@@ -18,11 +17,6 @@ module.exports = function () {
             .then(enrl => {
               enrollment.data = enrl
               return enrollment
-            }).catch(() => {
-              app.service('practitioners').patch(person._id, {
-                enrollments: filter(person.enrollments, e => toString(e.enrollmentId) !== toString(enrollment.enrollmentId))
-              })
-              return null
             })
         ))
 

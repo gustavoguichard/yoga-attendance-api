@@ -20,9 +20,9 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [ populateClassroom, decorateEnrollment ],
-    get: [ populateClassroom, decorateEnrollment ],
+    all: [populateClassroom, decorateEnrollment],
+    find: [],
+    get: [],
     create: [],
     update: [],
     patch: [],
