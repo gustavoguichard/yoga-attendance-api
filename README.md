@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gustavoguichard/yoga-attendance-api.svg?branch=master)](https://travis-ci.org/gustavoguichard/yoga-attendance-api)
+
 # yoga-attendance-api
 
 > The API for Yoga Attendance app
