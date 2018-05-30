@@ -1,3 +1,4 @@
+const md5 = require('md5')
 const { authenticate } = require('@feathersjs/authentication').hooks
 const { paramsFromClient } = require('feathers-hooks-common')
 const generateToken = require('../../hooks/generate-token')
@@ -6,9 +7,15 @@ const mutualFamily = require('../../hooks/mutual-family')
 const removeMutualFamily = require('../../hooks/remove-mutual-family')
 const { alterItems } = require('feathers-hooks-common/lib/services')
 
-const decoratePractitioner = alterItems(rec =>
+const gravatar = email => {
+  const hash = email && md5(email)
+  return `http://gravatar.com/avatar/${hash}?s=100&d=mp`
+}
+
+const decoratePractitioner = alterItems(rec => {
   rec.displayName = rec.nickName || rec.fullName
-)
+  rec.picture = rec.picture || gravatar(rec.email)
+})
 
 module.exports = {
   before: {
@@ -22,9 +29,9 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [ populateFamily, decoratePractitioner ],
-    get: [ populateFamily, decoratePractitioner ],
+    all: [decoratePractitioner],
+    find: [ populateFamily ],
+    get: [ populateFamily ],
     create: [ mutualFamily() ],
     update: [ mutualFamily() ],
     patch: [ mutualFamily() ],

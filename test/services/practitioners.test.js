@@ -1,6 +1,7 @@
 const assert = require('assert')
 const moment = require('moment')
-const { isString, isNaN } = require('lodash')
+const md5 = require('md5')
+const { includes, isString, isNaN } = require('lodash')
 const app = require('../../src/app')
 const removeMutualFamily = require('../../src/hooks/remove-mutual-family')
 
@@ -17,28 +18,34 @@ describe('\'practitioners\' service', async () => {
     await service.remove(null)
     relative = await service.create({
       fullName: 'Relative',
+      email: 'test2@test.com',
+      picture: 'foo',
     })
 
     practitioner = await service.create({
       fullName: 'Test user',
+      email: 'test@test.com',
       birthdate: moment('1986-07-13')._d,
       family: [relative._id],
     })
   })
 
-  describe('adds a displayName to practitioners', async () => {
+  describe('decoratePractitioner', async () => {
 
     it('uses nickName when it is available', async () => {
-      const result = await service.get(practitioner._id)
-
-      assert.equal(result.displayName, 'Test user')
+      assert.equal(practitioner.displayName, 'Test user')
     })
 
     it('uses the fullName when there is no nickName', async () => {
-      await service.patch(practitioner._id, { nickName: 'Testy' })
-      const result = await service.get(practitioner._id)
-
+      const result = await service.patch(practitioner._id, { nickName: 'Testy' })
       assert.equal(result.displayName, 'Testy')
+    })
+
+    it('defaults the picture with a gravatar hash', async () => {
+      const hash = md5(practitioner.email)
+      assert.ok(includes(practitioner.picture, '//gravatar.com/avatar/'))
+      assert.ok(includes(practitioner.picture, hash))
+      assert.equal(relative.picture, 'foo')
     })
   })
 
@@ -52,8 +59,7 @@ describe('\'practitioners\' service', async () => {
 
   describe('generateToken hook', async () => {
     it('generates a 4 digit code from birthdate if there is no equal code', async () => {
-      const result = await service.get(practitioner._id)
-      assert.equal(result.accessCode, '1307')
+      assert.equal(practitioner.accessCode, '1307')
     })
 
     it('generates a random 4 digit code if birthdate is already set', async () => {
