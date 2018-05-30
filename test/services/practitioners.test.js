@@ -2,6 +2,7 @@ const assert = require('assert')
 const moment = require('moment')
 const { isString, isNaN } = require('lodash')
 const app = require('../../src/app')
+const removeMutualFamily = require('../../src/hooks/remove-mutual-family')
 
 const service = app.service('practitioners')
 describe('\'practitioners\' service', async () => {
@@ -15,7 +16,6 @@ describe('\'practitioners\' service', async () => {
   before(async () => {
     relative = await service.create({
       fullName: 'Relative',
-      accessCode: '1234',
     })
 
     practitioner = await service.create({
@@ -97,6 +97,12 @@ describe('\'practitioners\' service', async () => {
     it('removes the _id from relatives families', async () => {
       const result = await service.get(practitioner._id)
       assert.deepEqual(result.family, [])
+    })
+
+    it('does not remove when method is not remove', async () => {
+      const hook = { method: 'foo', foo: 'bar' }
+      const result = await removeMutualFamily()(hook)
+      assert.deepEqual(result, hook)
     })
   })
 })

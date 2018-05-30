@@ -1,4 +1,5 @@
 const assert = require('assert')
+const moment = require('moment')
 const app = require('../../src/app')
 
 const service = app.service('frequency')
@@ -35,6 +36,41 @@ describe('\'frequency\' service', () => {
       assert.ok(!result.practitioner)
       assert.equal(result2.practitioner.fullName, 'Test')
       assert.equal(result3.data[0].practitioner.fullName, 'Test')
+    })
+
+    describe('avoid duplicate frequency', async () => {
+      it('does not allow 2 frequencies of same practitioner, class and day', async () => {
+        let freq
+        try {
+          freq = await service.create({
+            classId: classroom._id,
+            practitionerId: practitioner._id,
+          })
+        } catch(error) {
+          freq = false
+        }
+
+        assert.ok(!freq)
+      })
+
+      it('allows 2 frequencies of different practitioner, class on same day', async () => {
+        const class2 = await app.service('classrooms').create({ title: 'Temp class', tuition: 0 })
+        const freq = await service.create({
+          classId: class2._id,
+          practitionerId: practitioner._id,
+        })
+        assert.ok(freq._id)
+      })
+
+      it('allows 2 frequencies of same practitioner, class on different days', async () => {
+        const freq = await service.create({
+          classId: classroom._id,
+          practitionerId: practitioner._id,
+          createdAt: moment().subtract(2, 'days')._d,
+        })
+
+        assert.ok(freq._id)
+      })
     })
   })
 })
