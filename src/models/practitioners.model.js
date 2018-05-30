@@ -43,7 +43,6 @@ module.exports = function (app) {
 // - birthdate: date
 // - profession: string
 // - phone: string
-// - facebookId: string
 // - family: [practitionerId]
 // - classes: array
 // - accessCode: string

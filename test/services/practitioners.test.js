@@ -14,6 +14,7 @@ describe('\'practitioners\' service', async () => {
   let practitioner, relative
 
   before(async () => {
+    await service.remove(null)
     relative = await service.create({
       fullName: 'Relative',
     })

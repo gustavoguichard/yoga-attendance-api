@@ -29,35 +29,6 @@
       "usernameField": "email",
       "passwordField": "password"
     },
-    "google": {
-      "clientID": "your google client id",
-      "clientSecret": "your google client secret",
-      "successRedirect": "/",
-      "scope": [
-        "profile openid email"
-      ]
-    },
-    "facebook": {
-      "clientID": "your facebook client id",
-      "clientSecret": "your facebook client secret",
-      "successRedirect": "/",
-      "scope": [
-        "public_profile",
-        "email"
-      ],
-      "profileFields": [
-        "id",
-        "displayName",
-        "first_name",
-        "last_name",
-        "email",
-        "gender",
-        "profileUrl",
-        "birthday",
-        "picture",
-        "permissions"
-      ]
-    },
     "cookie": {
       "enabled": true,
       "name": "feathers-jwt",
