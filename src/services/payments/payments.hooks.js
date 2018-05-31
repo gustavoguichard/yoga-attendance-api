@@ -1,10 +1,9 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const { paramsFromClient } = require('feathers-hooks-common')
 const { populatePractitioners } = require('../../hooks/populate')
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), paramsFromClient('populatePractitioners') ],
+    all: [ authenticate('jwt') ],
     find: [],
     get: [],
     create: [],

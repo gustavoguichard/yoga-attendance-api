@@ -1,6 +1,5 @@
 const md5 = require('md5')
 const { authenticate } = require('@feathersjs/authentication').hooks
-const { paramsFromClient } = require('feathers-hooks-common')
 const generateToken = require('../../hooks/generate-token')
 const { populateFamily } = require('../../hooks/populate')
 const populateEnrollments = require('../../hooks/populate-enrollments')
@@ -20,7 +19,7 @@ const decoratePractitioner = alterItems(rec => {
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), paramsFromClient('populateFamily') ],
+    all: [ authenticate('jwt') ],
     find: [],
     get: [],
     create: [ mutualFamily(), generateToken() ],

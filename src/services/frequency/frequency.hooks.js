@@ -1,12 +1,11 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const { paramsFromClient } = require('feathers-hooks-common')
 const avoidDuplicateFrequency = require('../../hooks/avoid-duplicate-frequency')
 const { populatePractitioners, populateClassroom } = require('../../hooks/populate')
 const updatePayments = require('../../hooks/update-payments')
 
 module.exports = {
   before: {
-    all: [ paramsFromClient('populatePractitioners', 'populateClassroom'), authenticate('jwt'), (() => hook => hook)() ],
+    all: [ authenticate('jwt') ],
     find: [],
     get: [],
     create: [ avoidDuplicateFrequency() ],
