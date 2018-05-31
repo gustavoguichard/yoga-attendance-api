@@ -6,7 +6,7 @@ const updatePayments = require('../../hooks/update-payments')
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), paramsFromClient('populatePractitioners', 'populateClassroom') ],
+    all: [ paramsFromClient('populatePractitioners', 'populateClassroom'), authenticate('jwt'), (() => hook => hook)() ],
     find: [],
     get: [],
     create: [ avoidDuplicateFrequency() ],
