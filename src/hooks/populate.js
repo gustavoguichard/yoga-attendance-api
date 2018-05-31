@@ -7,6 +7,7 @@ module.exports = {
       nameAs: 'practitioner',
       parentField: 'practitionerId',
       childField: '_id',
+      provider: undefined,
     }
   }}),
   populateClassroom: populate({ schema: {
@@ -15,6 +16,7 @@ module.exports = {
       nameAs: 'classroom',
       parentField: 'classId',
       childField: '_id',
+      provider: undefined,
     }
   }}),
   populateTeacher: populate({ schema: {
@@ -23,6 +25,7 @@ module.exports = {
       nameAs: 'teacherData',
       parentField: 'teacher',
       childField: '_id',
+      provider: undefined,
     }
   }}),
   populateFamily: populate({ schema: {
@@ -31,6 +34,7 @@ module.exports = {
       nameAs: 'familyData',
       parentField: 'family',
       childField: '_id',
+      provider: undefined,
       asArray: true,
     }
   }}),
