@@ -26,22 +26,17 @@ describe('\'frequency\' service', () => {
   describe('populate hooks', async () => {
     it('populates classrooms', async () => {
       const result = await service.get(frequency._id)
-      const result2 = await service.get(frequency._id, { populateClassroom: true })
-      const result3 = await service.find({ populateClassroom: true, query: { _id: frequency._id } })
+      const result2 = await service.find({ query: { _id: frequency._id } })
 
-      assert.ok(!result.classroom)
-      assert.equal(result2.classroom.title, 'Sunday class')
-      assert.equal(result3.data[0].classroom.title, 'Sunday class')
+      assert.equal(result.classroom.title, 'Sunday class')
+      assert.equal(result2.data[0].classroom.title, 'Sunday class')
     })
 
     it('populates practitioners', async () => {
       const result = await service.get(frequency._id)
-      const result2 = await service.get(frequency._id, { populatePractitioners: true })
-      const result3 = await service.find({ populatePractitioners: true, query: { _id: frequency._id } })
-
-      assert.ok(!result.practitioner)
-      assert.equal(result2.practitioner.fullName, 'Test user')
-      assert.equal(result3.data[0].practitioner.fullName, 'Test user')
+      const result2 = (await service.find({ query: { _id: frequency._id } })).data[0]
+      assert.equal(result.practitioner.fullName, 'Test user')
+      assert.ok(result2.practitioner)
     })
 
     describe('avoid duplicate frequency', async () => {

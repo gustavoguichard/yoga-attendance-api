@@ -1,6 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 const avoidDuplicateFrequency = require('../../hooks/avoid-duplicate-frequency')
-const { populatePractitioners, populateClassroom } = require('../../hooks/populate')
+const { populatePractitioner, populateClassroom } = require('../../hooks/populate')
 const updatePayments = require('../../hooks/update-payments')
 
 module.exports = {
@@ -15,9 +15,9 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [ populateClassroom, populatePractitioners ],
-    get: [ populateClassroom, populatePractitioners ],
+    all: [ populateClassroom, populatePractitioner ],
+    find: [],
+    get: [],
     create: [ updatePayments() ],
     update: [ updatePayments() ],
     patch: [ updatePayments() ],

@@ -1,11 +1,10 @@
 // Application hooks that run for every service
 const logger = require('./hooks/logger')
 const { setNow } = require('feathers-hooks-common')
-const { paramsFromClient } = require('feathers-hooks-common')
 
 module.exports = {
   before: {
-    all: [ paramsFromClient('populateFamily', 'populateClassroom', 'populatePractitioners') ],
+    all: [],
     find: [],
     get: [],
     create: [ setNow('updatedAt') ],

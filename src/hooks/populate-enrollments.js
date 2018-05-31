@@ -1,11 +1,11 @@
-const { compact } = require('lodash')
+const { compact, map } = require('lodash')
 
 module.exports = function () {
   return async function (hook) {
     const { app, method, result, params } = hook
     const practitioners = method === 'find' ? result.data : [ result ]
     if(params.populateEnrollments) {
-      await Promise.all(practitioners.map(async person => {
+      await Promise.all(map(practitioners, async person => {
         if(!person.enrollments || person.enrollments.length === 0) {
           return null
         }

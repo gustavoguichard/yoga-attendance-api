@@ -1,14 +1,14 @@
 const assert = require('assert')
 const app = require('../../src/app')
 
-describe('\'enrollment\' service', () => {
+describe('\'enrollment\' service', async () => {
   it('registered the service', () => {
     const service = app.service('enrollment')
 
     assert.ok(service, 'Registered the service')
   })
 
-  describe('decorates the enrollment with className', () => {
+  describe('decorates the enrollment with className', async () => {
     it('className is "Aulas regulares" when no classId is given', async () => {
       const enrollment = await app.service('enrollment').create({
         pricing: {
@@ -33,9 +33,7 @@ describe('\'enrollment\' service', () => {
         classId: classroom._id,
       })
       const resp = await app.service('enrollment').get(enrollment._id)
-      const resp2 = await app.service('enrollment').get(enrollment._id, { populateClassroom: true })
-      assert.equal(resp.className, 'Aulas regulares')
-      assert.equal(resp2.className, 'Special class')
+      assert.equal(resp.className, 'Special class')
     })
   })
 })

@@ -20,7 +20,7 @@ describe('\'classrooms\' service', async () => {
 
   it('populates the teacher field', async () => {
     const result = await service.get(classroom._id)
-    assert.equal(result.teacher.fullName, 'Test user')
+    assert.equal(result.teacherData.fullName, 'Test user')
   })
 
   it('synchronize tuition for regular classes', async () => {

@@ -51,7 +51,7 @@ describe('\'practitioners\' service', async () => {
   describe('populate hooks', async () => {
     it('populates family', async () => {
       const populated = await service.get(practitioner._id, { populateFamily: true })
-      const result = populated.family[0]
+      const result = populated.familyData[0]
       assert.equal(result.fullName, relative.fullName)
     })
   })
