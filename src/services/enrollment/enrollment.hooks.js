@@ -19,9 +19,9 @@ module.exports = {
   },
 
   after: {
-    all: [populateClassroom, decorateEnrollment],
-    find: [],
-    get: [],
+    all: [],
+    find: [ populateClassroom,  decorateEnrollment ],
+    get: [ populateClassroom,  decorateEnrollment ],
     create: [],
     update: [],
     patch: [],

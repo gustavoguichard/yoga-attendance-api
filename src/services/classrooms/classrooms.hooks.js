@@ -4,7 +4,7 @@ const mutualRegularPrice = require('../../hooks/mutual-regular-price')
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [],
     find: [],
     get: [],
     create: [],
@@ -14,9 +14,9 @@ module.exports = {
   },
 
   after: {
-    all: [ populateTeacher ],
-    find: [],
-    get: [],
+    all: [ authenticate('jwt') ],
+    find: [ populateTeacher ],
+    get: [ populateTeacher ],
     create: [ mutualRegularPrice() ],
     update: [ mutualRegularPrice() ],
     patch: [ mutualRegularPrice() ],

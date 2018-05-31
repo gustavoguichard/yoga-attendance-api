@@ -33,6 +33,7 @@ describe('\'enrollment\' service', async () => {
         classId: classroom._id,
       })
       const resp = await app.service('enrollment').get(enrollment._id)
+      console.log(resp)
       assert.equal(resp.className, 'Special class')
     })
   })
