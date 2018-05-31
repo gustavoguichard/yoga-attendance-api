@@ -29,9 +29,9 @@ module.exports = {
   },
 
   after: {
-    all: [ decoratePractitioner ],
-    find: [ populateEnrollments(), populateFamily ],
-    get: [ populateEnrollments(), populateFamily ],
+    all: [ populateEnrollments(), populateFamily, decoratePractitioner ],
+    find: [],
+    get: [],
     create: [ mutualFamily() ],
     update: [ mutualFamily() ],
     patch: [ mutualFamily() ],

@@ -14,9 +14,9 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [ populateTeacher ],
-    get: [ populateTeacher ],
+    all: [ populateTeacher ],
+    find: [],
+    get: [],
     create: [ mutualRegularPrice() ],
     update: [ mutualRegularPrice() ],
     patch: [ mutualRegularPrice() ],

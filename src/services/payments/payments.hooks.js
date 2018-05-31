@@ -13,9 +13,9 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [ populatePractitioner ],
-    get: [ populatePractitioner ],
+    all: [ populatePractitioner ],
+    find: [],
+    get: [],
     create: [],
     update: [],
     patch: [],
