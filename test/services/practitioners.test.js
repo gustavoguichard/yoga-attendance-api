@@ -51,10 +51,10 @@ describe('\'practitioners\' service', async () => {
   describe('normalizeData', async () => {
     it('birthdate field', async () => {
       const result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '05051992', email: 'test3@test.com' })
-      assert.equal(toString(result.birthdate), toString(moment('1992-05-05')._d))
+      assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
 
       await service.patch(result._id, { birthdate: '1992-05-05T03:00:00.000Z' })
-      assert.equal(toString(result.birthdate), toString(moment('1992-05-05')._d))
+      assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
     })
   })
 
