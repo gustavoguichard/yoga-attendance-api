@@ -49,12 +49,31 @@ describe('\'practitioners\' service', async () => {
   })
 
   describe('normalizeData', async () => {
-    it('birthdate field', async () => {
-      const result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '05051992', email: 'test3@test.com' })
-      assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
+    describe('birthdate field', async () => {
+      let result
 
-      await service.patch(result._id, { birthdate: '1992-05-05T03:00:00.000Z' })
-      assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
+      before(async () => {
+        result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '05051992', email: 'test3@test.com' })
+      })
+
+      it('normalizes brazilian DD/MM/YYYY', async () => {
+        assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
+      })
+
+      it('accepts normal date', async () => {
+        result = await service.patch(result._id, { birthdate: '1992-05-05T03:00:00.000Z' })
+        assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
+      })
+
+      it('skips blank date', async () => {
+        result = await service.patch(result._id, { birthdate: null })
+        assert.ok(!result.birthdate)
+      })
+
+      it('skips weird date', async () => {
+        result = await service.patch(result._id, { birthdate: 'foobar' })
+        assert.ok(!result.birthdate)
+      })
     })
   })
 

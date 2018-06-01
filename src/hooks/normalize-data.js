@@ -6,9 +6,11 @@ module.exports = function (serviceName) {
     practitioners: (hook) => {
       const { data } = hook
 
-      if(data.birthdate && !(data.birthdate instanceof Date)) {
-        const date = moment(data.birthdate, 'DD/MM/YYYY').add(6, 'hour')
-        data.birthdate = date.isValid() ? date._d : null
+      if(data.birthdate) {
+        const date = moment(data.birthdate).isValid()
+          ? moment(data.birthdate)
+          : moment(data.birthdate, 'DD/MM/YYYY')
+        data.birthdate = date.isValid() ? date.add(6, 'hour')._d : null
       }
       return hook
     }
