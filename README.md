@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/gustavoguichard/yoga-attendance-api.svg?branch=master)](https://travis-ci.org/gustavoguichard/yoga-attendance-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5dd04ff558e84493f618/maintainability)](https://codeclimate.com/github/gustavoguichard/yoga-attendance-api/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/5dd04ff558e84493f618/test_coverage)](https://codeclimate.com/github/gustavoguichard/yoga-attendance-api/test_coverage)
+[![codecov](https://codecov.io/gh/gustavoguichard/yoga-attendance-api/branch/master/graph/badge.svg)](https://codecov.io/gh/gustavoguichard/yoga-attendance-api)
 
 # yoga-attendance-api
 
