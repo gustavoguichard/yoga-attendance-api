@@ -1,3 +1,4 @@
+const { Conflict } = require('@feathersjs/errors')
 const { getTimeRangeQuery } = require('../utils/date-helpers')
 
 module.exports = function () {
@@ -12,7 +13,7 @@ module.exports = function () {
     })
 
     if(frequencies.total) {
-      hook.result = 'Can not have 2 frequencies at same day'
+      throw new Conflict('Praticante já está inscrito nesta aula hoje')
     }
 
     return hook

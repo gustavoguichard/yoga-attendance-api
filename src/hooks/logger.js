@@ -3,17 +3,15 @@ const logger = require('winston')
 
 module.exports = function () {
   return function (hook) {
-    if (process.env.NODE_ENV === 'test') {
-      return hook
-    }
-
     let message = `${hook.type}: ${hook.path} - Method: ${hook.method}`
 
     if (hook.type === 'error') {
       message += `: ${hook.error.message}`
     }
 
-    logger.info(message)
+    message = (process.env.NODE_ENV === 'test') ? '' : message
+
+    message && logger.info(message)
     logger.debug('hook.data', hook.data)
     logger.debug('hook.params', hook.params)
 

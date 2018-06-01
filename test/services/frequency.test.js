@@ -1,6 +1,6 @@
 const assert = require('assert')
 const moment = require('moment')
-const { isString } = require('lodash')
+const { includes, isString } = require('lodash')
 const app = require('../../src/app')
 const fx = require('../fixtures')
 const beforeAll = require('../beforeAll')
@@ -41,12 +41,16 @@ describe('\'frequency\' service', () => {
 
     describe('avoid duplicate frequency', async () => {
       it('does not allow 2 frequencies of same practitioner, class and day', async () => {
-        const freq = await service.create({
-          classId: classroom._id,
-          practitionerId: practitioner._id,
-        })
-
-        assert.ok(isString(freq))
+        let result
+        try {
+          await service.create({
+            classId: classroom._id,
+            practitionerId: practitioner._id,
+          })
+        } catch(error) {
+          result = error.message
+        }
+        assert.ok(includes(result, 'Praticante já está inscrito'))
       })
 
       it('allows 2 frequencies of different practitioner, class on same day', async () => {

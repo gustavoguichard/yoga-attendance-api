@@ -5,6 +5,7 @@ const { includes, isString, isNaN, toString } = require('lodash')
 const fx = require('../fixtures')
 const beforeAll = require('../beforeAll')
 const app = require('../../src/app')
+const normalizeData = require('../../src/hooks/normalize-data')
 const removeMutualFamily = require('../../src/hooks/remove-mutual-family')
 
 const service = app.service('practitioners')
@@ -74,6 +75,11 @@ describe('\'practitioners\' service', async () => {
         result = await service.patch(result._id, { birthdate: 'foobar' })
         assert.ok(!result.birthdate)
       })
+    })
+
+    it('returs hook if not used properly', () => {
+      const result = normalizeData('foo')('bar')
+      assert.equal(result, 'bar')
     })
   })
 
