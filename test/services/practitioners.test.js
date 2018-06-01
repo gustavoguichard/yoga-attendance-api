@@ -1,7 +1,7 @@
 const assert = require('assert')
 const moment = require('moment')
 const md5 = require('md5')
-const { includes, isString, isNaN } = require('lodash')
+const { includes, isString, isNaN, toString } = require('lodash')
 const fx = require('../fixtures')
 const beforeAll = require('../beforeAll')
 const app = require('../../src/app')
@@ -45,6 +45,16 @@ describe('\'practitioners\' service', async () => {
       assert.ok(includes(practitioner.picture, '//gravatar.com/avatar/'))
       assert.ok(includes(practitioner.picture, hash))
       assert.equal(relative.picture, 'foo')
+    })
+  })
+
+  describe('normalizeData', async () => {
+    it('birthdate field', async () => {
+      const result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '05051992', email: 'test3@test.com' })
+      assert.equal(toString(result.birthdate), toString(moment('1992-05-05')._d))
+
+      await service.patch(result._id, { birthdate: "1992-05-05T03:00:00.000Z" })
+      assert.equal(toString(result.birthdate), toString(moment('1992-05-05')._d))
     })
   })
 

@@ -1,6 +1,7 @@
 const md5 = require('md5')
 const { authenticate } = require('@feathersjs/authentication').hooks
 const generateToken = require('../../hooks/generate-token')
+const normalizeData = require('../../hooks/normalize-data')
 const { populateFamily } = require('../../hooks/populate')
 const populateEnrollments = require('../../hooks/populate-enrollments')
 const mutualFamily = require('../../hooks/mutual-family')
@@ -17,14 +18,16 @@ const decoratePractitioner = alterItems(rec => {
   rec.picture = rec.picture || gravatar(rec.email)
 })
 
+const beforeEditing = [ normalizeData('practitioners'), mutualFamily() ]
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [ mutualFamily(), generateToken() ],
-    update: [ mutualFamily() ],
-    patch: [ mutualFamily() ],
+    create: [ ...beforeEditing, generateToken() ],
+    update: beforeEditing,
+    patch: beforeEditing,
     remove: []
   },
 
