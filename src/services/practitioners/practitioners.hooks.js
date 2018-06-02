@@ -1,5 +1,6 @@
 const md5 = require('md5')
 const { authenticate } = require('@feathersjs/authentication').hooks
+const validations = require('../../hooks/validations')
 const generateToken = require('../../hooks/generate-token')
 const normalizeData = require('../../hooks/normalize-data')
 const { populateFamily } = require('../../hooks/populate')
@@ -18,7 +19,7 @@ const decoratePractitioner = alterItems(rec => {
   rec.picture = rec.picture || gravatar(rec.email)
 })
 
-const beforeEditing = [ normalizeData('practitioners'), mutualFamily() ]
+const beforeEditing = [ normalizeData('practitioners'), validations('practitioners'), mutualFamily() ]
 
 module.exports = {
   before: {

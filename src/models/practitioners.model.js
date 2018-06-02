@@ -1,4 +1,3 @@
-require('mongoose-type-email')
 // practitioners-model.js - A mongoose model
 //
 // See http://mongoosejs.com/docs/models.html
@@ -8,12 +7,7 @@ module.exports = function (app) {
   const { SchemaTypes, Schema } = mongooseClient
   const practitioners = new Schema({
     user: { type: SchemaTypes.ObjectId, ref: 'users' },
-    email: {
-      type: String,
-      unique: [true, 'This email is already taken'],
-      sparse: true,
-      trim: true
-    },
+    email: { type: String, trim: true },
     fullName: { type: String, required: [true, 'Name is required'] },
     nickName: { type: String },
     picture: { type: String },

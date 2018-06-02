@@ -1,11 +1,10 @@
 const assert = require('assert')
 const moment = require('moment')
 const md5 = require('md5')
-const { includes, isString, isNaN, toString } = require('lodash')
+const { includes, isString, isNaN } = require('lodash')
 const fx = require('../fixtures')
 const beforeAll = require('../beforeAll')
 const app = require('../../src/app')
-const normalizeData = require('../../src/hooks/normalize-data')
 const removeMutualFamily = require('../../src/hooks/remove-mutual-family')
 
 const service = app.service('practitioners')
@@ -20,7 +19,7 @@ describe('\'practitioners\' service', async () => {
   beforeAll(async () => {
     await service.remove(null)
     relative = await fx.practitioner({
-      fullName: 'Relative',
+      fullName: 'Relative Practitioner',
       email: 'bar',
     }, ['picture', 'accessCode'])
 
@@ -46,40 +45,6 @@ describe('\'practitioners\' service', async () => {
       assert.ok(includes(practitioner.picture, '//gravatar.com/avatar/'))
       assert.ok(includes(practitioner.picture, hash))
       assert.equal(relative.picture, 'foo')
-    })
-  })
-
-  describe('normalizeData', async () => {
-    describe('birthdate field', async () => {
-      let result
-
-      before(async () => {
-        result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '05051992', email: 'test3@test.com' })
-      })
-
-      it('normalizes brazilian DD/MM/YYYY', async () => {
-        assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
-      })
-
-      it('accepts normal date', async () => {
-        result = await service.patch(result._id, { birthdate: '1992-05-05T03:00:00.000Z' })
-        assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
-      })
-
-      it('skips blank date', async () => {
-        result = await service.patch(result._id, { birthdate: null })
-        assert.ok(!result.birthdate)
-      })
-
-      it('skips weird date', async () => {
-        result = await service.patch(result._id, { birthdate: 'foobar' })
-        assert.ok(!result.birthdate)
-      })
-    })
-
-    it('returs hook if not used properly', () => {
-      const result = normalizeData('foo')('bar')
-      assert.equal(result, 'bar')
     })
   })
 

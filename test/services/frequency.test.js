@@ -1,6 +1,6 @@
 const assert = require('assert')
 const moment = require('moment')
-const { includes, isString } = require('lodash')
+const { includes } = require('lodash')
 const app = require('../../src/app')
 const fx = require('../fixtures')
 const beforeAll = require('../beforeAll')
