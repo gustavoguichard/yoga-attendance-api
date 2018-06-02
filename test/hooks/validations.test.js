@@ -48,7 +48,7 @@ describe('validations', async () => {
     })
 
     it('throws 400 if phone is not a number', async () => {
-      let result, result2
+      let result
       try {
         await validate({ data: { phone: 'f0198' }})
       } catch(error) {

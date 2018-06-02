@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 const { populateTeacher } = require('../../hooks/populate')
+const normalizeData = require('../../hooks/normalize-data')
 const mutualRegularPrice = require('../../hooks/mutual-regular-price')
 
 module.exports = {
@@ -7,9 +8,9 @@ module.exports = {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
+    create: [ normalizeData('classrooms') ],
+    update: [ normalizeData('classrooms') ],
+    patch: [ normalizeData('classrooms') ],
     remove: []
   },
 
