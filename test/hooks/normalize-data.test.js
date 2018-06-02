@@ -7,9 +7,9 @@ const normalizeData = require('../../src/hooks/normalize-data')
 describe('normalizeData', async () => {
   describe('practitioners', async () => {
     let service
-    before(() => {
-      app.service('practitioners').remove(null)
+    before(async () => {
       service = app.service('practitioners')
+      await service.remove(null)
     })
 
     describe('birthdate field', async () => {
@@ -39,6 +39,25 @@ describe('normalizeData', async () => {
       })
     })
 
+  })
+
+  describe('classrooms', async () => {
+    let service
+    before(async () => {
+      service = app.service('classrooms')
+      await service.remove(null)
+    })
+
+    it('takes tuition from other regularClass if it was not provided', async () => {
+      await fx.classroom({}, ['title', 'tuition', 'regularClass'])
+      const result = await fx.classroom({ title: 'Other class', regularClass: true, tuition: null })
+      const result2 = await fx.classroom({ title: 'Another class', regularClass: true, tuition: '' })
+      const result3 = await fx.classroom({ title: 'Yet another class', regularClass: true, tuition: undefined })
+
+      assert.equal(result.tuition, 100)
+      assert.equal(result2.tuition, 100)
+      assert.equal(result3.tuition, 100)
+    })
   })
 
   describe('with non existent service', () => {

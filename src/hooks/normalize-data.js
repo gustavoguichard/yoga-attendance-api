@@ -1,7 +1,7 @@
-const { get } = require('lodash')
+const { get, includes } = require('lodash')
 const moment = require('moment')
 
-module.exports = function (serviceName) {
+module.exports = serviceName => {
   const options = {
     practitioners: hook => {
       const { data } = hook
@@ -15,10 +15,9 @@ module.exports = function (serviceName) {
       return hook
     },
     classrooms: async hook => {
-      const { app, data } = hook
+      const { app, data, method } = hook
       const { tuition, regularClass } = data
-
-      if(!tuition && tuition !== undefined && regularClass) {
+      if(!tuition && includes(['create', 'update'], method) && regularClass) {
         const classrooms = (await app.service('classrooms').find({ query: { regularClass: true } })).data
         if (classrooms.length) {
           data.tuition = classrooms[0].tuition
