@@ -2,6 +2,8 @@ const { authenticate } = require('@feathersjs/authentication').hooks
 const commonHooks = require('feathers-hooks-common')
 const { restrictToOwner } = require('feathers-authentication-hooks')
 const { hashPassword } = require('@feathersjs/authentication-local').hooks
+const userPractitioner = require('../../hooks/user-practitioner')
+
 const restrict = [ authenticate('jwt'), restrictToOwner({
   idField: '_id',
   ownerField: '_id'
@@ -20,10 +22,8 @@ module.exports = {
 
   after: {
     all: [
-      commonHooks.when(
-        hook => hook.params.provider,
-        commonHooks.discard('password')
-      )
+      commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')),
+      userPractitioner()
     ],
     find: [],
     get: [],

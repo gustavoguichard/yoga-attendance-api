@@ -8,8 +8,7 @@ module.exports = function (app) {
   const users = new Schema({
     email: { type: SchemaTypes.Email, sparse: true },
     password: { type: String },
-    role: { type: [String] },
-    practitionerId : { type: SchemaTypes.ObjectId, ref: 'practitioners' },
+    permissions: { type: [String] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   })
