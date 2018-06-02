@@ -1,6 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 const avoidDuplicateFrequency = require('../../hooks/avoid-duplicate-frequency')
 const { populatePractitioner, populateClassroom } = require('../../hooks/populate')
+const checkPermissions = require('../../hooks/frequency-permissions')
 const updatePayments = require('../../hooks/update-payments')
 
 module.exports = {
@@ -8,10 +9,10 @@ module.exports = {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [ avoidDuplicateFrequency() ],
-    update: [],
-    patch: [],
-    remove: []
+    create: [ checkPermissions(), avoidDuplicateFrequency() ],
+    update: [ checkPermissions() ],
+    patch: [ checkPermissions() ],
+    remove: [ checkPermissions() ],
   },
 
   after: {
@@ -21,7 +22,7 @@ module.exports = {
     create: [ updatePayments() ],
     update: [ updatePayments() ],
     patch: [ updatePayments() ],
-    remove: [ updatePayments() ]
+    remove: [ updatePayments() ],
   },
 
   error: {
@@ -31,6 +32,6 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   }
 }

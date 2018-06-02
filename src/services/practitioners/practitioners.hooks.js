@@ -29,7 +29,7 @@ module.exports = {
     create: [ ...beforeEditing, generateToken() ],
     update: beforeEditing,
     patch: beforeEditing,
-    remove: []
+    remove: [],
   },
 
   after: {
@@ -39,7 +39,7 @@ module.exports = {
     create: [ mutualFamily() ],
     update: [ mutualFamily() ],
     patch: [ mutualFamily() ],
-    remove: [ removeMutualFamily() ]
+    remove: [ removeMutualFamily() ],
   },
 
   error: {
@@ -49,6 +49,6 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   }
 }

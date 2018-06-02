@@ -1,3 +1,4 @@
+const { NotAuthenticated } = require('@feathersjs/errors')
 const authentication = require('@feathersjs/authentication')
 const jwt = require('@feathersjs/authentication-jwt')
 const local = require('@feathersjs/authentication-local')
@@ -17,6 +18,12 @@ module.exports = function (app) {
     before: {
       create: [ authentication.hooks.authenticate(config.strategies) ],
       remove: [ authentication.hooks.authenticate('jwt') ]
-    }
+    },
+    error: {
+      create: context => {
+        context.error = new NotAuthenticated('Login inválido')
+        return context
+      }
+    },
   })
 }

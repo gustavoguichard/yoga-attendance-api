@@ -1,17 +1,20 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
+const permissions = require('feathers-permissions')
 const { populateTeacher } = require('../../hooks/populate')
 const normalizeData = require('../../hooks/normalize-data')
 const mutualRegularPrice = require('../../hooks/mutual-regular-price')
+
+const checkPermissions = permissions({ roles: ['admin'] })
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [ normalizeData('classrooms') ],
-    update: [ normalizeData('classrooms') ],
-    patch: [ normalizeData('classrooms') ],
-    remove: []
+    create: [ checkPermissions, normalizeData('classrooms') ],
+    update: [ checkPermissions, normalizeData('classrooms') ],
+    patch: [ checkPermissions, normalizeData('classrooms') ],
+    remove: [ checkPermissions ],
   },
 
   after: {
@@ -21,7 +24,7 @@ module.exports = {
     create: [ mutualRegularPrice() ],
     update: [ mutualRegularPrice() ],
     patch: [ mutualRegularPrice() ],
-    remove: [ ]
+    remove: [ ],
   },
 
   error: {
@@ -31,6 +34,6 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   }
 }
