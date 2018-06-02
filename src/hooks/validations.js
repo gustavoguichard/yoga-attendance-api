@@ -7,9 +7,9 @@ const isNumber = value => !isNaN(+value)
 module.exports = function (serviceName) {
   const options = {
     practitioners: async (hook) => {
-      const { data, app, id, method } = hook
+      const { data, app, id } = hook
       const { fullName, email, phone } = data
-      if (method === 'create' && !fullName) {
+      if (!fullName && fullName !== undefined) {
         throw new BadRequest('É necessário informar o nome completo')
       }
       if (fullName && size(words(fullName)) < 2) {
