@@ -65,6 +65,37 @@ describe('validations', async () => {
     })
   })
 
+  describe('classrooms', async () => {
+    let validate = validations('classrooms')
+    it('throws 400 if no title is provided when creating or updating', async () => {
+      let result, result2, result3
+      try {
+        await validate({ data: {}, method: 'create' })
+      } catch(error) { result = error.code }
+      try {
+        await validate({ data: {}, method: 'update' })
+      } catch(error) { result2 = error.code }
+      result3 = await validate({ data: {}, method: 'patch' })
+      assert.equal(result, 400)
+      assert.equal(result2, 400)
+      assert.ok(!result3)
+    })
+
+    it('throws 400 if no tuition is provided when creating or updating', async () => {
+      let result, result2, result3
+      try {
+        await validate({ data: { title: 'Some class' }, method: 'create' })
+      } catch(error) { result = error.code }
+      try {
+        await validate({ data: { title: 'Some class' }, method: 'update' })
+      } catch(error) { result2 = error.code }
+      result3 = await validate({ data: { title: 'Some class' }, method: 'patch' })
+      assert.equal(result, 400)
+      assert.equal(result2, 400)
+      assert.ok(!result3)
+    })
+  })
+
   describe('with non existent servide', () => {
     it('returs hook if not used properly', () => {
       const result = validations('foo')('bar')

@@ -3,8 +3,10 @@ const { get, includes, isNaN, size, toString, words } = require('lodash')
 // const moment = require('moment')
 
 const isNumber = value => !isNaN(+value)
+const isFullRecord = method => includes(['create', 'update'], method)
 
 module.exports = function (serviceName) {
+
   const options = {
     practitioners: async (hook) => {
       const { data, app, id } = hook
@@ -28,11 +30,10 @@ module.exports = function (serviceName) {
     classrooms: async (hook) => {
       const { data, method } = hook
       const { title, tuition } = data
-      const isFullRecord = includes(['create', 'update'], method)
-      if (!title && isFullRecord) {
+      if (!title && isFullRecord(method)) {
         throw new BadRequest('É necessário informar um título')
       }
-      if (!tuition && tuition !== 0 && isFullRecord) {
+      if (!tuition && tuition !== 0 && isFullRecord(method)) {
         throw new BadRequest('É necessário informar um preço')
       }
     },
