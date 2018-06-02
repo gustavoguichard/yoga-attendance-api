@@ -10,7 +10,7 @@ module.exports = serviceName => {
         const date = moment(data.birthdate).isValid()
           ? moment(data.birthdate)
           : moment(data.birthdate, 'DD/MM/YYYY')
-        data.birthdate = date.isValid() ? date.add(6, 'hour')._d : null
+        data.birthdate = date.isValid() ? date._d : null
       }
       return hook
     },

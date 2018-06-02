@@ -1,5 +1,5 @@
 const { BadRequest, Conflict } = require('@feathersjs/errors')
-const { get, isNaN, size, toString, words } = require('lodash')
+const { get, includes, isNaN, size, toString, words } = require('lodash')
 // const moment = require('moment')
 
 const isNumber = value => !isNaN(+value)
@@ -23,6 +23,17 @@ module.exports = function (serviceName) {
       }
       if (phone && !isNumber(phone)) {
         throw new BadRequest('Por favor, confira o número de telefone')
+      }
+    },
+    classrooms: async (hook) => {
+      const { data, method } = hook
+      const { title, tuition } = data
+      const isFullRecord = includes(['create', 'update'], method)
+      if (!title && isFullRecord) {
+        throw new BadRequest('É necessário informar um título')
+      }
+      if (!tuition && tuition !== 0 && isFullRecord) {
+        throw new BadRequest('É necessário informar um preço')
       }
     },
   }
