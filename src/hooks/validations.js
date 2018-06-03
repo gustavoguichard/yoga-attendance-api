@@ -1,8 +1,10 @@
 const { BadRequest, Conflict } = require('@feathersjs/errors')
-const { get, includes, isNaN, size, toString, words } = require('lodash')
+const { get, includes, isNaN, isString, size, toString, words } = require('lodash')
 // const moment = require('moment')
 
 const isNumber = value => !isNaN(+value)
+const isDate = value => value instanceof Date
+const isValidDate = date => isDate(date) || (isString(date) && date.replace(/\D/g, '').length === 8)
 const isFullRecord = method => includes(['create', 'update'], method)
 
 module.exports = function (serviceName) {
@@ -10,7 +12,7 @@ module.exports = function (serviceName) {
   const options = {
     practitioners: async (hook) => {
       const { data, app, id } = hook
-      const { fullName, email, phone } = data
+      const { fullName, birthdate, email, phone } = data
       if (!fullName && fullName !== undefined) {
         throw new BadRequest('É necessário informar o nome completo')
       }
@@ -22,6 +24,9 @@ module.exports = function (serviceName) {
         if (result && toString(result._id) !== id) {
           throw new Conflict(`Email ${email} já está sendo utilizado`)
         }
+      }
+      if (birthdate && !isValidDate(birthdate)) {
+        throw new BadRequest('A data de nascimento deve seguir o formato: DD/MM/AAAA')
       }
       if (phone && !isNumber(phone)) {
         throw new BadRequest('Por favor, confira o número de telefone')

@@ -6,7 +6,7 @@ const fx = require('../fixtures')
 const ERROR = 'You do not have the correct permissions.'
 
 describe('permissions', async () => {
-  let admin, teacher
+  let admin, teacher, result
 
   beforeAll(async () => {
     await app.service('users').remove(null)

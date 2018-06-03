@@ -1,5 +1,4 @@
 const assert = require('assert')
-const { toString } = require('lodash')
 const app = require('../../src/app')
 const fx = require('../fixtures')
 

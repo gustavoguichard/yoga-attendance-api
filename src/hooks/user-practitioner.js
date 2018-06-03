@@ -1,8 +1,8 @@
-const { compact, map } = require('lodash')
+const { map } = require('lodash')
 
 module.exports = function () {
   return async function (hook) {
-    const { app, method, result, params } = hook
+    const { app, method, result } = hook
     const users = method === 'find' ? result.data : [ result ]
 
     await Promise.all(map(users, async user => {
