@@ -24,17 +24,12 @@ describe('normalizeData', async () => {
       })
 
       it('accepts normal date', async () => {
-        result = await service.patch(result._id, { birthdate: '1992-05-05T03:00:00.000Z' })
+        result = await service.patch(result._id, { birthdate: new Date('1992-05-05T03:00:00.000Z') })
         assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
       })
 
       it('skips blank date', async () => {
         result = await service.patch(result._id, { birthdate: null })
-        assert.ok(!result.birthdate)
-      })
-
-      it('skips weird date', async () => {
-        result = await service.patch(result._id, { birthdate: 'foobar' })
         assert.ok(!result.birthdate)
       })
     })

@@ -19,7 +19,7 @@ const decoratePractitioner = alterItems(rec => {
   rec.picture = rec.picture || gravatar(rec.email)
 })
 
-const beforeEditing = [ normalizeData('practitioners'), validations('practitioners'), mutualFamily() ]
+const beforeEditing = [ validations('practitioners'), normalizeData('practitioners'), mutualFamily() ]
 
 module.exports = {
   before: {

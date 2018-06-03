@@ -3,7 +3,8 @@ const { get, includes, isNaN, isString, size, toString, words } = require('lodas
 // const moment = require('moment')
 
 const isNumber = value => !isNaN(+value)
-const isDate = value => value instanceof Date
+const isDate = date => date instanceof Date
+const isStringDate = date => isString(date) && date.replace(/\D/g, '').length === 8
 const isValidDate = date => isDate(date) || (isString(date) && date.replace(/\D/g, '').length === 8)
 const isFullRecord = method => includes(['create', 'update'], method)
 

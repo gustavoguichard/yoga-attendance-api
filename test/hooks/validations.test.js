@@ -48,15 +48,11 @@ describe('validations', async () => {
     })
 
     it('throws 400 if birthdate is of invalid format', async () => {
-      let result, result2
+      let result
       try {
         await validate({ data: { birthdate: '121284' }})
       } catch(error) { result = error.code }
-      try {
-        await validate({ data: { birthdate: '12/12/84' }})
-      } catch(error) { result2 = error.code }
       assert.equal(result, 400)
-      assert.equal(result2, 400)
     })
 
     it('throws 400 if phone is not a number', async () => {
