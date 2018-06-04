@@ -7,6 +7,7 @@ module.exports = {
       nameAs: 'practitioner',
       parentField: 'practitionerId',
       childField: '_id',
+      query: { $select: ['fullName', 'picture', 'nickName', 'email', 'teacher'] },
       provider: undefined,
     }
   }}),
@@ -16,6 +17,7 @@ module.exports = {
       nameAs: 'classroom',
       parentField: 'classId',
       childField: '_id',
+      query: { $select: ['title', 'regularClass', 'tuition'] },
       provider: undefined,
     }
   }}),
@@ -25,6 +27,7 @@ module.exports = {
       nameAs: 'teacherData',
       parentField: 'teacher',
       childField: '_id',
+      query: { $select: ['fullName', 'picture', 'nickName', 'email'] },
       provider: undefined,
     }
   }}),
@@ -35,6 +38,7 @@ module.exports = {
       parentField: 'family',
       childField: '_id',
       provider: undefined,
+      query: { $select: ['fullName', 'picture', 'nickName', 'email'] },
       asArray: true,
     }
   }}),

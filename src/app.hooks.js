@@ -4,7 +4,7 @@ const { setNow } = require('feathers-hooks-common')
 
 module.exports = {
   before: {
-    all: [ hook => {if(hook.params.provider) console.log(hook.params.provider, hook.params.headers); return hook} ],
+    all: [],
     find: [],
     get: [],
     create: [ setNow('updatedAt') ],
