@@ -1,5 +1,5 @@
-const { authenticate } = require('@feathersjs/authentication').hooks
-const permissions = require('feathers-permissions')
+const { authenticate } = require('@feathersjs/authentication').hooks;
+const permissions = require('../../../node_modules/feathers-permissions/lib')
 const { populateTeacher } = require('../../hooks/populate')
 const normalizeData = require('../../hooks/normalize-data')
 const mutualRegularPrice = require('../../hooks/mutual-regular-price')
