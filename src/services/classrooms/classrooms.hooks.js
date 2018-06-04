@@ -1,10 +1,10 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const permissions = require('../../../node_modules/feathers-permissions/lib')
+const { authenticate } = require('@feathersjs/authentication').hooks
 const { populateTeacher } = require('../../hooks/populate')
+// const permissions = require('feathers-permissions')
 const normalizeData = require('../../hooks/normalize-data')
 const mutualRegularPrice = require('../../hooks/mutual-regular-price')
 
-const checkPermissions = permissions({ roles: ['admin'] })
+const checkPermissions = foo => foo
 
 module.exports = {
   before: {
