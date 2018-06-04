@@ -30,7 +30,7 @@ module.exports = function (serviceName) {
         }
       }
       if (email && !isEmail(email)) {
-        throw new BadRequest(`O e-mail ${email} não parece ser um válido`)
+        throw new BadRequest(`O e-mail ${email} não parece ser válido`)
       }
       if (birthdate && !isValidDate(birthdate)) {
         throw new BadRequest('A data de nascimento deve seguir o formato: DD/MM/AAAA')
