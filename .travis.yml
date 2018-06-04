@@ -6,8 +6,6 @@ cache:
     - node_modules
 services: mongodb
 before_install:
-  - make build-node
-  - nvm use 8.10.0
   - node --version
   - rm -rf ./node_modules package-lock.json
   - npm install -g npm@6.1.0
