@@ -1,4 +1,5 @@
 const md5 = require('md5')
+const { tail, words } = require('lodash')
 const { authenticate } = require('@feathersjs/authentication').hooks
 const validations = require('../../hooks/validations')
 const generateToken = require('../../hooks/generate-token')
@@ -15,7 +16,8 @@ const gravatar = email => {
 }
 
 const decoratePractitioner = alterItems(rec => {
-  rec.displayName = rec.nickName || rec.fullName
+  rec.displayName = rec.nickName || words(rec.fullName)[0]
+  rec.surname = rec.nickName ? rec.fullName : tail(words(rec.fullName)).join(' ')
   rec.avatar = rec.picture || gravatar(rec.email)
 })
 

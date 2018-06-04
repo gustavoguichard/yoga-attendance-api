@@ -35,7 +35,7 @@ describe('\'frequency\' service', () => {
     it('populates practitioners', async () => {
       const result = await service.get(frequency._id)
       const result2 = (await service.find({ query: { _id: frequency._id } })).data[0]
-      assert.equal(result.practitioner.fullName, 'Test user')
+      assert.equal(result.practitioner.fullName, 'Test User')
       assert.ok(result2.practitioner)
     })
 

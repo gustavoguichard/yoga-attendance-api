@@ -3,7 +3,7 @@ const { pick } = require('lodash')
 
 const data = {
   practitioner: {
-    fullName: 'Test user',
+    fullName: 'Test User',
     email: 'test@test.com',
     birthdate: new Date(),
     picture: 'foo',

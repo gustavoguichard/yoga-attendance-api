@@ -31,11 +31,21 @@ describe('\'practitioners\' service', async () => {
 
   describe('decoratePractitioner', async () => {
 
-    it('uses nickName when it is available', async () => {
-      assert.equal(practitioner.displayName, 'Test user')
+    it('uses the first word of fullName when there is no nickName', async () => {
+      assert.equal(practitioner.displayName, 'Test')
     })
 
-    it('uses the fullName when there is no nickName', async () => {
+    it('uses fullName as surname when nickName is set', async () => {
+      const result = await service.patch(practitioner._id, { nickName: 'Testy' })
+      assert.equal(result.surname, 'Test User')
+    })
+
+    it('uses tail of fullName as surname when no nickName is provided', async () => {
+      const result = await service.patch(practitioner._id, { nickName: null })
+      assert.equal(result.surname, 'User')
+    })
+
+    it('uses nickName when it is available', async () => {
       const result = await service.patch(practitioner._id, { nickName: 'Testy' })
       assert.equal(result.displayName, 'Testy')
     })
