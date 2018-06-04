@@ -44,23 +44,25 @@
     "body-parser": "^1.18.3",
     "compression": "^1.6.2",
     "cors": "^2.8.3",
-    "eslint": "^4.19.1",
     "feathers-authentication-hooks": "^0.1.4",
     "feathers-hooks-common": "^4.11.0",
     "feathers-mongoose": "^5.1.0",
-    "feathers-permissions": "git://github.com/feathersjs-ecosystem/feathers-permissions.git#37e8c7aad30df2351c539bf7deb0334ae3753142",
+    "feathers-permissions": "^0.2.1",
     "helmet": "^3.12.1",
-    "istanbul": "^1.1.0-alpha.1",
     "lodash": "^4.17.10",
     "md5": "^2.2.1",
-    "mocha": "^3.4.2",
     "moment": "^2.22.1",
     "mongoose": "^4.13.14",
     "mongoose-type-email": "^1.0.9",
-    "nodemon": "^1.17.5",
-    "request": "^2.87.0",
-    "request-promise": "^4.2.1",
     "serve-favicon": "^2.5.0",
     "winston": "^2.4.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "istanbul": "^1.1.0-alpha.1",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.17.5",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.1"
   }
 }
