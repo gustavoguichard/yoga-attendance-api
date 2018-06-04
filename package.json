@@ -48,7 +48,7 @@
     "feathers-authentication-hooks": "^0.1.4",
     "feathers-hooks-common": "^4.11.0",
     "feathers-mongoose": "^5.1.0",
-    "feathers-permissions": "^0.2.1",
+    "feathers-permissions": "git://github.com/feathersjs-ecosystem/feathers-permissions.git#37e8c7aad30df2351c539bf7deb0334ae3753142",
     "helmet": "^3.12.1",
     "istanbul": "^1.1.0-alpha.1",
     "lodash": "^4.17.10",
