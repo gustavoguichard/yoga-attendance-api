@@ -62,5 +62,5 @@
     "request-promise": "^4.2.1",
     "serve-favicon": "^2.5.0",
     "winston": "^2.4.2"
-  },
+  }
 }
