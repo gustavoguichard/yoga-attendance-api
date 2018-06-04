@@ -40,11 +40,14 @@ describe('\'practitioners\' service', async () => {
       assert.equal(result.displayName, 'Testy')
     })
 
-    it('defaults the picture with a gravatar hash', async () => {
+    it('sets the avatar from the picture', async () => {
+      assert.equal(relative.avatar, 'foo')
+    })
+
+    it('defaults the avatar with a gravatar hash', async () => {
       const hash = md5(practitioner.email)
-      assert.ok(includes(practitioner.picture, '//gravatar.com/avatar/'))
-      assert.ok(includes(practitioner.picture, hash))
-      assert.equal(relative.picture, 'foo')
+      assert.ok(includes(practitioner.avatar, '//gravatar.com/avatar/'))
+      assert.ok(includes(practitioner.avatar, hash))
     })
   })
 

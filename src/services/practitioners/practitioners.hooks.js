@@ -16,7 +16,7 @@ const gravatar = email => {
 
 const decoratePractitioner = alterItems(rec => {
   rec.displayName = rec.nickName || rec.fullName
-  rec.picture = rec.picture || gravatar(rec.email)
+  rec.avatar = rec.picture || gravatar(rec.email)
 })
 
 const beforeEditing = [ validations('practitioners'), normalizeData('practitioners'), mutualFamily() ]
