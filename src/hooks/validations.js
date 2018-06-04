@@ -1,9 +1,12 @@
 const { BadRequest, Conflict } = require('@feathersjs/errors')
 const { get, includes, isNaN, isString, size, toString, words } = require('lodash')
-// const moment = require('moment')
 
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+const matches = (regex, value) => value && regex.test(value)
 const isNumber = value => !isNaN(+value)
-const isDate = date => date instanceof Date
+const isDate = date => (date instanceof Date)
+const isEmail = email => matches(EMAIL_REGEX, email)
 const isStringDate = date => isString(date) && date.replace(/\D/g, '').length === 8
 const isValidDate = date => isDate(date) || (isString(date) && date.replace(/\D/g, '').length === 8)
 const isFullRecord = method => includes(['create', 'update'], method)
@@ -25,6 +28,9 @@ module.exports = function (serviceName) {
         if (result && toString(result._id) !== id) {
           throw new Conflict(`Email ${email} já está sendo utilizado`)
         }
+      }
+      if (email && !isEmail(email)) {
+        throw new BadRequest(`O e-mail ${email} não parece ser um válido`)
       }
       if (birthdate && !isValidDate(birthdate)) {
         throw new BadRequest('A data de nascimento deve seguir o formato: DD/MM/AAAA')

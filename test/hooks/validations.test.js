@@ -47,6 +47,16 @@ describe('validations', async () => {
       assert.equal(result, 409)
     })
 
+    it('throws 400 if email is invalid', async () => {
+      let result
+      try {
+        await validate({ data: { email: 'foo@bar.c' }, app })
+      } catch(error) {
+        result = error.code
+      }
+      assert.equal(result, 400)
+    })
+
     it('throws 400 if birthdate is of invalid format', async () => {
       let result
       try {

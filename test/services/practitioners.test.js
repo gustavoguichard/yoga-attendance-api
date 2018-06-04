@@ -20,7 +20,7 @@ describe('\'practitioners\' service', async () => {
     await service.remove(null)
     relative = await fx.practitioner({
       fullName: 'Relative Practitioner',
-      email: 'bar',
+      email: 'foo@bar.com',
     }, ['picture', 'accessCode'])
 
     practitioner = await fx.practitioner({
