@@ -1,7 +1,7 @@
 const { get } = require('lodash')
 const { authenticate } = require('@feathersjs/authentication').hooks
 const { alterItems } = require('feathers-hooks-common/lib/services')
-const permissions = require('feathers-permissions')
+const permissions = require('../../hooks/permissions')
 const { populateClassroom } = require('../../hooks/populate')
 
 const decorateEnrollment = alterItems(rec =>
