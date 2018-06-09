@@ -12,7 +12,6 @@ module.exports = function (app) {
     picture: { type: String },
     phone: { type: String },
     accessCode: { type: String, required: true, unique: true },
-    classrooms: [{ type: SchemaTypes.ObjectId, ref: 'classrooms' }],
     family: [{ type: SchemaTypes.ObjectId, ref: 'practitioners' }],
     birthdate: { type: Date },
     teacher: { type: Boolean, default: false },

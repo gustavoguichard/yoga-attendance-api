@@ -34,6 +34,18 @@ describe('normalizeData', async () => {
       })
     })
 
+    describe('email field', async () => {
+      let result
+
+      before(async () => {
+        result = await fx.practitioner({ fullName: 'Email Bro', birthdate: '01/05/1992', email: 'Test4@test.com' })
+      })
+
+      it('lowercases the email', async () => {
+        assert.equal(result.email, 'test4@test.com')
+      })
+    })
+
   })
 
   describe('classrooms', async () => {

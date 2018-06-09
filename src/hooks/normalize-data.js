@@ -12,6 +12,9 @@ module.exports = serviceName => {
           : moment(data.birthdate)
         data.birthdate = date.isValid() ? date._d : null
       }
+      if(data.email) {
+        data.email = data.email.toLowerCase()
+      }
       return hook
     },
     classrooms: async hook => {
