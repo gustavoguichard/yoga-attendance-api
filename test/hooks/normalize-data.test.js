@@ -16,16 +16,16 @@ describe('normalizeData', async () => {
       let result
 
       before(async () => {
-        result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '05051992', email: 'test3@test.com' })
+        result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '06/05/1992', email: 'test3@test.com' })
       })
 
       it('normalizes brazilian DD/MM/YYYY', async () => {
-        assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
+        assert.ok(includes(toString(result.birthdate), 'May 06 1992'))
       })
 
       it('accepts normal date', async () => {
-        result = await service.patch(result._id, { birthdate: new Date('1992-05-05T03:00:00.000Z') })
-        assert.ok(includes(toString(result.birthdate), 'May 05 1992'))
+        result = await service.patch(result._id, { birthdate: new Date('1992-05-06T03:00:00.000Z') })
+        assert.ok(includes(toString(result.birthdate), 'May 06 1992'))
       })
 
       it('skips blank date', async () => {
