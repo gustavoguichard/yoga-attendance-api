@@ -12,7 +12,7 @@ const { alterItems } = require('feathers-hooks-common/lib/services')
 
 const gravatar = email => {
   const hash = email && md5(email)
-  return `http://gravatar.com/avatar/${hash}?s=100&d=mp`
+  return `https://gravatar.com/avatar/${hash}?s=100&d=mp`
 }
 
 const decoratePractitioner = alterItems(rec => {

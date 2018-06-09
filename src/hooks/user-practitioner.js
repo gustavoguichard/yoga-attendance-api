@@ -7,7 +7,7 @@ module.exports = function () {
 
     await Promise.all(map(users, async user => {
       const { email } = user
-      const practitioner = (await app.service('practitioners').find({ query: { email } })).data[0]
+      const practitioner = (await app.service('practitioners').find({ query: { email, $select: ['email', 'picture', 'fullName', 'nickName'] } })).data[0]
       if (practitioner) {
         user.practitioner = practitioner
       }

@@ -7,9 +7,9 @@ module.exports = serviceName => {
       const { data } = hook
 
       if(data.birthdate) {
-        const date = moment(data.birthdate).isValid()
-          ? moment(data.birthdate)
-          : moment(data.birthdate, 'DD/MM/YYYY')
+        const date = typeof data.birthdate === 'string'
+          ? moment(data.birthdate, 'DD/MM/YYYY')
+          : moment(data.birthdate)
         data.birthdate = date.isValid() ? date._d : null
       }
       return hook
