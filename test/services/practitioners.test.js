@@ -84,6 +84,14 @@ describe('\'practitioners\' service', async () => {
       assert.ok(isString(result.accessCode))
       assert.ok(!isNaN(+result.accessCode))
     })
+
+    it('never generates a random number that is possibly a DD/MM code', async () => {
+      const result = await service.create({
+        fullName: 'Yet Anoter Not Relative',
+        birthdate: moment('1994-07-13')._d,
+      })
+      assert.ok(+result.accessCode < 101 || +result.accessCode > 3112)
+    })
   })
 
   describe(`'mutual family' hook on remove`, async () => {

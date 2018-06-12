@@ -1,7 +1,8 @@
-const { padStart, random, includes, map } = require('lodash')
+const { random, includes, map, takeRight } = require('lodash')
 const moment = require('moment')
 
-const generateRandom = () => padStart(random(0, 9999), 4, '0')
+const generate2Random = (init = 0) => takeRight((''+random(init, 100)).split(''), 2).join('')
+const generateRandom = () => generate2Random(32) + generate2Random(13)
 const generateFromBD = bd => moment(bd).format('DDMM')
 
 module.exports = function () {
