@@ -17,7 +17,7 @@ module.exports = {
       nameAs: 'classroom',
       parentField: 'classId',
       childField: '_id',
-      query: { $select: ['title', 'regularClass', 'tuition'] },
+      query: { $select: ['title', 'teacher', 'regularClass', 'tuition', 'practitioners'] },
       provider: undefined,
     }
   }}),
