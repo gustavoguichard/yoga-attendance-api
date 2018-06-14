@@ -61,14 +61,6 @@ describe('\'practitioners\' service', async () => {
     })
   })
 
-  describe('populate hooks', async () => {
-    it('populates family', async () => {
-      const populated = await service.get(practitioner._id, { populateFamily: true })
-      const result = populated.familyData[0]
-      assert.equal(result.fullName, relative.fullName)
-    })
-  })
-
   describe('generateToken hook', async () => {
     it('generates a 4 digit code from birthdate if there is no equal code', async () => {
       assert.equal(practitioner.accessCode, '1307')

@@ -31,15 +31,4 @@ module.exports = {
       provider: undefined,
     }
   }}),
-  populateFamily: populate({ schema: {
-    include: {
-      service: 'practitioners',
-      nameAs: 'familyData',
-      parentField: 'family',
-      childField: '_id',
-      provider: undefined,
-      query: { $select: ['fullName', 'picture', 'nickName', 'email'] },
-      asArray: true,
-    }
-  }}),
 }
