@@ -39,6 +39,26 @@ describe('\'frequency\' service', () => {
       assert.ok(result2.practitioner)
     })
 
+    describe('set practitioner by email', async () => {
+      it('succeeds in case the practitioner exists', async () => {
+        const email = 'offline@dude.com'
+        await fx.practitioner({ email })
+        const result = await service.create({ classId: classroom._id, email })
+        assert.ok(result.practitionerId)
+      })
+
+      it('fails otherwise', async () => {
+        let result
+        const email = 'nonexistent@email.com'
+        try {
+          await service.create({ classId: classroom._id, email })
+        } catch(error) {
+          result = error.message
+        }
+        assert.ok(includes(result, email))
+      })
+    })
+
     describe('avoid duplicate frequency', async () => {
       it('does not allow 2 frequencies of same practitioner, class and day', async () => {
         let result

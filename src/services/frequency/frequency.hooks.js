@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 const avoidDuplicateFrequency = require('../../hooks/avoid-duplicate-frequency')
+const setPractitionerByEmail = require('../../hooks/set-practitioner-by-email')
 const { populatePractitioner, populateClassroom } = require('../../hooks/populate')
 const updatePayments = require('../../hooks/update-payments')
 
@@ -8,7 +9,7 @@ module.exports = {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [ avoidDuplicateFrequency() ],
+    create: [ setPractitionerByEmail(), avoidDuplicateFrequency() ],
     update: [],
     patch: [],
     remove: [],
