@@ -45,6 +45,7 @@ describe('\'frequency\' service', () => {
         await fx.practitioner({ email })
         const result = await service.create({ classId: classroom._id, email })
         assert.ok(result.practitionerId)
+        assert.ok(!result.email)
       })
 
       it('fails otherwise', async () => {
