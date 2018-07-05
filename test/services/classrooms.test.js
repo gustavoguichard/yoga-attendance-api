@@ -18,11 +18,6 @@ describe('\'classrooms\' service', async () => {
     classroom = await fx.classroom({ teacher: practitioner._id })
   })
 
-  it('populates the teacher field', async () => {
-    const result = await service.get(classroom._id)
-    assert.equal(result.teacherData.fullName, 'Test User')
-  })
-
   it('synchronize tuition for regular classes', async () => {
     let another = await service.create({
       title: 'Another class',

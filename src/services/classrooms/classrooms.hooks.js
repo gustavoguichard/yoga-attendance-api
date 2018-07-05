@@ -1,5 +1,4 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const { populateTeacher } = require('../../hooks/populate')
 const permissions = require('../../hooks/permissions')
 const normalizeData = require('../../hooks/normalize-data')
 const mutualRegularPrice = require('../../hooks/mutual-regular-price')
@@ -18,7 +17,7 @@ module.exports = {
   },
 
   after: {
-    all: [ populateTeacher ],
+    all: [],
     find: [],
     get: [],
     create: [ mutualRegularPrice() ],

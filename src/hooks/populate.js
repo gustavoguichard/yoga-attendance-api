@@ -21,14 +21,4 @@ module.exports = {
       provider: undefined,
     }
   }}),
-  populateTeacher: populate({ schema: {
-    include: {
-      service: 'practitioners',
-      nameAs: 'teacherData',
-      parentField: 'teacher',
-      childField: '_id',
-      query: { $select: ['fullName', 'picture', 'nickName', 'email'] },
-      provider: undefined,
-    }
-  }}),
 }
