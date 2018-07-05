@@ -1,5 +1,4 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const { populatePractitioner } = require('../../hooks/populate')
 const { alterItems } = require('feathers-hooks-common/lib/services')
 
 const decorate = alterItems(rec => {
@@ -18,7 +17,7 @@ module.exports = {
   },
 
   after: {
-    all: [ populatePractitioner, decorate ],
+    all: [ decorate ],
     find: [],
     get: [],
     create: [],

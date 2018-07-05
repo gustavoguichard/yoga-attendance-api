@@ -1,12 +1,5 @@
-const { get } = require('lodash')
 const { authenticate } = require('@feathersjs/authentication').hooks
-const { alterItems } = require('feathers-hooks-common/lib/services')
 const permissions = require('../../hooks/permissions')
-const { populateClassroom } = require('../../hooks/populate')
-
-const decorateEnrollment = alterItems(rec =>
-  rec.className = get(rec, 'classroom.title') || 'Aulas regulares'
-)
 
 const checkPermissions = permissions({ roles: ['admin'] })
 
@@ -22,7 +15,7 @@ module.exports = {
   },
 
   after: {
-    all: [ populateClassroom,  decorateEnrollment ],
+    all: [],
     find: [],
     get: [],
     create: [],
