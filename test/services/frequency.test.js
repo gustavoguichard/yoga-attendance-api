@@ -7,7 +7,7 @@ const beforeAll = require('../beforeAll')
 
 const service = app.service('frequency')
 describe('\'frequency\' service', () => {
-  let frequency, classroom, practitioner
+  let classroom, practitioner
 
   it('registered the service', () => {
 
@@ -20,78 +20,61 @@ describe('\'frequency\' service', () => {
     await app.service('classrooms').remove(null)
     classroom = await fx.classroom()
     practitioner = await fx.practitioner()
-    frequency = await service.create({ classId: classroom._id, practitionerId: practitioner._id })
+    await service.create({ classId: classroom._id, practitionerId: practitioner._id })
   })
 
-  describe('populate hooks', async () => {
-    it('populates classrooms', async () => {
-      const result = await service.get(frequency._id)
-      const result2 = await service.find({ query: { _id: frequency._id } })
-
-      assert.equal(result.classroom.title, 'Sunday class')
-      assert.equal(result2.data[0].classroom.title, 'Sunday class')
+  describe('set practitioner by email', async () => {
+    it('succeeds in case the practitioner exists', async () => {
+      const email = 'offline@dude.com'
+      await fx.practitioner({ email })
+      const result = await service.create({ classId: classroom._id, email })
+      assert.ok(result.practitionerId)
+      assert.ok(!result.email)
     })
 
-    it('populates practitioners', async () => {
-      const result = await service.get(frequency._id)
-      const result2 = (await service.find({ query: { _id: frequency._id } })).data[0]
-      assert.equal(result.practitioner.fullName, 'Test User')
-      assert.ok(result2.practitioner)
+    it('fails otherwise', async () => {
+      let result
+      const email = 'nonexistent@email.com'
+      try {
+        await service.create({ classId: classroom._id, email })
+      } catch(error) {
+        result = error.message
+      }
+      assert.ok(includes(result, email))
     })
+  })
 
-    describe('set practitioner by email', async () => {
-      it('succeeds in case the practitioner exists', async () => {
-        const email = 'offline@dude.com'
-        await fx.practitioner({ email })
-        const result = await service.create({ classId: classroom._id, email })
-        assert.ok(result.practitionerId)
-        assert.ok(!result.email)
-      })
-
-      it('fails otherwise', async () => {
-        let result
-        const email = 'nonexistent@email.com'
-        try {
-          await service.create({ classId: classroom._id, email })
-        } catch(error) {
-          result = error.message
-        }
-        assert.ok(includes(result, email))
-      })
-    })
-
-    describe('avoid duplicate frequency', async () => {
-      it('does not allow 2 frequencies of same practitioner, class and day', async () => {
-        let result
-        try {
-          await service.create({
-            classId: classroom._id,
-            practitionerId: practitioner._id,
-          })
-        } catch(error) {
-          result = error.message
-        }
-        assert.ok(includes(result, 'Praticante já está inscrito'))
-      })
-
-      it('allows 2 frequencies of different practitioner, class on same day', async () => {
-        const class2 = await app.service('classrooms').create({ title: 'Temp class', tuition: 0 })
-        const freq = await service.create({
-          classId: class2._id,
-          practitionerId: practitioner._id,
-        })
-        assert.ok(freq._id)
-      })
-
-      it('allows 2 frequencies of same practitioner, class on different days', async () => {
-        const freq = await service.create({
+  describe('avoid duplicate frequency', async () => {
+    it('does not allow 2 frequencies of same practitioner, class and day', async () => {
+      let result
+      try {
+        await service.create({
           classId: classroom._id,
           practitionerId: practitioner._id,
-          createdAt: moment().subtract(2, 'days')._d,
         })
+      } catch(error) {
+        result = error.message
+      }
+      assert.ok(includes(result, 'Praticante já está inscrito'))
+    })
 
-        assert.ok(freq._id)
+    it('allows 2 frequencies of different practitioner, class on same day', async () => {
+      const class2 = await app.service('classrooms').create({ title: 'Temp class', tuition: 0 })
+      const freq = await service.create({
+        classId: class2._id,
+        practitionerId: practitioner._id,
       })
+      assert.ok(freq._id)
+    })
+
+    it('allows 2 frequencies of same practitioner, class on different days', async () => {
+      const freq = await service.create({
+        classId: classroom._id,
+        practitionerId: practitioner._id,
+        createdAt: moment().subtract(2, 'days')._d,
+      })
+
+      assert.ok(freq._id)
     })
   })
 })
