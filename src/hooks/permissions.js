@@ -9,7 +9,7 @@ module.exports = function ({ roles, error }) {
     hook.params.permitted = hook.params.permitted || permitted
 
     if (hook.params.provider && error !== false && !hook.params.permitted) {
-      throw new Forbidden('You do not have the correct permissions.')
+      throw new Forbidden('Parece que você não tem permissão para executar esta ação.')
     }
 
     return hook
