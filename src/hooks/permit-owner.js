@@ -5,11 +5,12 @@ module.exports = function (service, field = 'owner') {
     const { app, method, params, id } = hook
     const { user } = params
 
-    if (user && ['update', 'patch', 'remove'].includes(method)) {
+    if (user && user.practitioner && ['update', 'patch', 'remove'].includes(method)) {
       const object = await app.service(service).get(id)
-      const isSameId = toString(object[field]) === toString(user._id)
+      const isSameId = toString(object[field]) === toString(user.practitioner._id)
       hook.params.permitted = hook.params.permitted || isSameId
     }
+
 
     return hook
   }

@@ -10,6 +10,7 @@ describe('permissions', async () => {
 
   beforeAll(async () => {
     await app.service('users').remove(null)
+    await app.service('practitioners').remove(null)
     await app.service('classrooms').remove(null)
     await app.service('enrollment').remove(null)
     const adminUser = await app.service('users').create({
@@ -96,7 +97,9 @@ describe('permissions', async () => {
 
     it('lets classroom\'s teacher patch', async () => {
       result = null
-      const temp = await app.service('classrooms').create({ title: 'Foo', tuition: 0, teacher: teacher.user._id })
+      const practitioner = await fx.practitioner()
+      const temp = await app.service('classrooms').create({ title: 'Foo', tuition: 0, teacher: practitioner._id })
+      teacher.user = { ...teacher.user, practitioner }
       result = await app.service('classrooms').patch(temp._id, { tuition: 40 }, teacher)
       assert.ok(result._id)
     })
