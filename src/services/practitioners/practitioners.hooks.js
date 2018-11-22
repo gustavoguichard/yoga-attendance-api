@@ -1,13 +1,13 @@
 const md5 = require('md5')
 const { tail, words } = require('lodash')
 const { authenticate } = require('@feathersjs/authentication').hooks
+const { alterItems } = require('feathers-hooks-common/lib/services')
 const validations = require('../../hooks/validations')
 const generateToken = require('../../hooks/generate-token')
 const normalizeData = require('../../hooks/normalize-data')
 const populateEnrollments = require('../../hooks/populate-enrollments')
 const mutualFamily = require('../../hooks/mutual-family')
-const removeMutualFamily = require('../../hooks/remove-mutual-family')
-const { alterItems } = require('feathers-hooks-common/lib/services')
+const removeData = require('../../hooks/remove-practitioner-data')
 
 const gravatar = email => {
   const hash = email && md5(email)
@@ -16,31 +16,37 @@ const gravatar = email => {
 
 const decoratePractitioner = alterItems(rec => {
   rec.displayName = rec.nickName || words(rec.fullName)[0]
-  rec.surname = rec.nickName ? rec.fullName : tail(words(rec.fullName)).join(' ')
+  rec.surname = rec.nickName
+    ? rec.fullName
+    : tail(words(rec.fullName)).join(' ')
   rec.avatar = rec.picture || gravatar(rec.email)
 })
 
-const beforeEditing = [ validations('practitioners'), normalizeData('practitioners'), mutualFamily() ]
+const beforeEditing = [
+  validations('practitioners'),
+  normalizeData('practitioners'),
+  mutualFamily(),
+]
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [ ...beforeEditing, generateToken() ],
+    create: [...beforeEditing, generateToken()],
     update: beforeEditing,
     patch: beforeEditing,
     remove: [],
   },
 
   after: {
-    all: [ populateEnrollments(), decoratePractitioner ],
+    all: [populateEnrollments(), decoratePractitioner],
     find: [],
     get: [],
-    create: [ mutualFamily() ],
-    update: [ mutualFamily() ],
-    patch: [ mutualFamily() ],
-    remove: [ removeMutualFamily() ],
+    create: [mutualFamily()],
+    update: [mutualFamily()],
+    patch: [mutualFamily()],
+    remove: [removeData()],
   },
 
   error: {
@@ -51,5 +57,5 @@ module.exports = {
     update: [],
     patch: [],
     remove: [],
-  }
+  },
 }
