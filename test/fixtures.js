@@ -1,5 +1,5 @@
+const pick = require('lodash/pick')
 const app = require('../src/app')
-const { pick } = require('lodash')
 
 const data = {
   practitioner: {

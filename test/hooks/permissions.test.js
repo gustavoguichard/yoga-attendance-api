@@ -6,7 +6,9 @@ const fx = require('../fixtures')
 const ERROR = 'Parece que você não tem permissão para executar esta ação.'
 
 describe('permissions', async () => {
-  let admin, teacher, result
+  let admin
+  let teacher
+  let result
 
   beforeAll(async () => {
     await app.service('users').remove(null)
@@ -28,7 +30,8 @@ describe('permissions', async () => {
   })
 
   describe('enrollment', async () => {
-    let classroom, result
+    let classroom
+    let result
     before(async () => {
       await app.service('classrooms').remove(null)
       classroom = await fx.classroom()
@@ -37,17 +40,25 @@ describe('permissions', async () => {
     it('throws 403 when teacher is trying to create', async () => {
       result = null
       try {
-        await app.service('enrollment').create({ classId: classroom._id }, teacher)
-      } catch(error) { result = error.message }
+        await app
+          .service('enrollment')
+          .create({ classId: classroom._id }, teacher)
+      } catch (error) {
+        result = error.message
+      }
       assert.equal(result, ERROR)
     })
 
     it('throws 403 when teacher is trying to update', async () => {
       result = null
       try {
-        const temp = await app.service('enrollment').create({ classId: classroom._id })
+        const temp = await app
+          .service('enrollment')
+          .create({ classId: classroom._id })
         await app.service('enrollment').update(temp._id, {}, teacher)
-      } catch(error) { result = error.message }
+      } catch (error) {
+        result = error.message
+      }
       assert.equal(result, ERROR)
     })
 
@@ -55,7 +66,9 @@ describe('permissions', async () => {
       result = null
       try {
         await app.service('enrollment').remove(null, teacher)
-      } catch(error) { result = error.message }
+      } catch (error) {
+        result = error.message
+      }
       assert.equal(result, ERROR)
     })
 
@@ -73,8 +86,12 @@ describe('permissions', async () => {
     it('throws 403 when teacher is trying to create', async () => {
       result = null
       try {
-        await app.service('classrooms').create({ title: 'Foo', tuition: 0 }, teacher)
-      } catch(error) { result = error.message }
+        await app
+          .service('classrooms')
+          .create({ title: 'Foo', tuition: 0 }, teacher)
+      } catch (error) {
+        result = error.message
+      }
       assert.equal(result, ERROR)
     })
 
@@ -82,25 +99,37 @@ describe('permissions', async () => {
       result = null
       try {
         await app.service('classrooms').remove(null, teacher)
-      } catch(error) { result = error.message }
+      } catch (error) {
+        result = error.message
+      }
       assert.equal(result, ERROR)
     })
 
     it('throws 403 when another teacher is trying to patch', async () => {
       result = null
       try {
-        const temp = await app.service('classrooms').create({ title: 'Foo', tuition: 0 })
-        await app.service('classrooms').patch(temp._id, { tuition: 40 }, teacher)
-      } catch(error) { result = error.message }
+        const temp = await app
+          .service('classrooms')
+          .create({ title: 'Foo', tuition: 0 })
+        await app
+          .service('classrooms')
+          .patch(temp._id, { tuition: 40 }, teacher)
+      } catch (error) {
+        result = error.message
+      }
       assert.equal(result, ERROR)
     })
 
-    it('lets classroom\'s teacher patch', async () => {
+    it("lets classroom's teacher patch", async () => {
       result = null
       const practitioner = await fx.practitioner()
-      const temp = await app.service('classrooms').create({ title: 'Foo', tuition: 0, teacher: practitioner._id })
+      const temp = await app
+        .service('classrooms')
+        .create({ title: 'Foo', tuition: 0, teacher: practitioner._id })
       teacher.user = { ...teacher.user, practitioner }
-      result = await app.service('classrooms').patch(temp._id, { tuition: 40 }, teacher)
+      result = await app
+        .service('classrooms')
+        .patch(temp._id, { tuition: 40 }, teacher)
       assert.ok(result._id)
     })
 

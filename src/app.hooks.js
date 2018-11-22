@@ -1,35 +1,35 @@
 // Application hooks that run for every service
-const logger = require('./hooks/logger')
 const { setNow } = require('feathers-hooks-common')
+const logger = require('./hooks/logger')
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [ setNow('updatedAt') ],
-    update: [ setNow('updatedAt') ],
-    patch: [ setNow('updatedAt') ],
-    remove: []
+    create: [setNow('updatedAt')],
+    update: [setNow('updatedAt')],
+    patch: [setNow('updatedAt')],
+    remove: [],
   },
 
   after: {
-    all: [ logger() ],
+    all: [logger()],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   error: {
-    all: [ logger() ],
+    all: [logger()],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
-  }
+    remove: [],
+  },
 }

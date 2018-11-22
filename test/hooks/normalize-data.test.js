@@ -16,7 +16,11 @@ describe('normalizeData', async () => {
       let result
 
       before(async () => {
-        result = await fx.practitioner({ fullName: 'Birthday Bro', birthdate: '06/05/1992', email: 'test3@test.com' })
+        result = await fx.practitioner({
+          fullName: 'Birthday Bro',
+          birthdate: '06/05/1992',
+          email: 'test3@test.com',
+        })
       })
 
       it('normalizes brazilian DD/MM/YYYY', async () => {
@@ -24,7 +28,9 @@ describe('normalizeData', async () => {
       })
 
       it('accepts normal date', async () => {
-        result = await service.patch(result._id, { birthdate: new Date('1992-05-06T03:00:00.000Z') })
+        result = await service.patch(result._id, {
+          birthdate: new Date('1992-05-06T03:00:00.000Z'),
+        })
         assert.ok(includes(toString(result.birthdate), 'May 06 1992'))
       })
 
@@ -38,14 +44,17 @@ describe('normalizeData', async () => {
       let result
 
       before(async () => {
-        result = await fx.practitioner({ fullName: 'Email Bro', birthdate: '01/05/1992', email: 'Test4@test.com' })
+        result = await fx.practitioner({
+          fullName: 'Email Bro',
+          birthdate: '01/05/1992',
+          email: 'Test4@test.com',
+        })
       })
 
       it('lowercases the email', async () => {
         assert.equal(result.email, 'test4@test.com')
       })
     })
-
   })
 
   describe('classrooms', async () => {
@@ -57,9 +66,21 @@ describe('normalizeData', async () => {
 
     it('takes tuition from other regularClass if it was not provided', async () => {
       await fx.classroom({}, ['title', 'tuition', 'regularClass'])
-      const result = await fx.classroom({ title: 'Other class', regularClass: true, tuition: null })
-      const result2 = await fx.classroom({ title: 'Another class', regularClass: true, tuition: '' })
-      const result3 = await fx.classroom({ title: 'Yet another class', regularClass: true, tuition: undefined })
+      const result = await fx.classroom({
+        title: 'Other class',
+        regularClass: true,
+        tuition: null,
+      })
+      const result2 = await fx.classroom({
+        title: 'Another class',
+        regularClass: true,
+        tuition: '',
+      })
+      const result3 = await fx.classroom({
+        title: 'Yet another class',
+        regularClass: true,
+        tuition: undefined,
+      })
 
       assert.equal(result.tuition, 100)
       assert.equal(result2.tuition, 100)
